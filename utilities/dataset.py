@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 """
 ContactPose dataset loading utilities
 """
@@ -143,15 +145,21 @@ class ContactPose(object):
       self._ox.append(this_ox)
       self._om.append(this_om)
 
-    # load MANO data for the class
-    if ContactPose._mano_dicts is not None:
-      return
-    ContactPose._mano_dicts = []
-    for hand_name in ('LEFT', 'RIGHT'):
-      filename = osp.join('thirdparty', 'mano', 'models',
-                          'MANO_{:s}.pkl'.format(hand_name))
-      with open(filename, 'rb') as f:
-        ContactPose._mano_dicts.append(pickle.load(f, encoding='latin1'))
+
+    # check if MANO code and models are present
+    if mutils.MANO_PRESENT:
+      # load MANO data for the class
+      if ContactPose._mano_dicts is not None:
+        return
+      ContactPose._mano_dicts = []
+      for hand_name in ('LEFT', 'RIGHT'):
+        filename = osp.join('thirdparty', 'mano', 'models',
+                            'MANO_{:s}.pkl'.format(hand_name))
+        with open(filename, 'rb') as f:
+          ContactPose._mano_dicts.append(pickle.load(f, encoding='latin1'))
+    else:
+      print('MANO code was not detected, please follow steps in README.md. '
+            'mano_meshes() will return (None, None)')
 
 
   def __len__(self):

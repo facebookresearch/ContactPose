@@ -85,10 +85,11 @@ $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse 
 `simple_mano` mode
 <img src="readme_images/simple_mano.png" width="100">
 
-5. See the [demo notebook](demo.ipynb) for information on accessing images, poses, and calibration data.
+# [Demo notebook](demo.ipynb)
+Information on accessing images, poses, and calibration data.
 
 
-# Download entire dataset
+# Download Options
 
 This is done through `scripts/download_data.py`:
 ```bash
@@ -125,3 +126,18 @@ provide an image download directory. This can be on a large SSD drive, for examp
 It will automatically symlink the downloaded data to the appropriate location
 in `data/contactpose_data` for easy access. The image download directory defaults
 to `data/contactpose_data`.
+
+3D models of objects and locations of markers placed on them (this is already
+done if you run `startup.py`):
+
+```bash
+$ python scripts/download_data.py --type 3Dmodels
+$ python scripts/download_data.py --type markers
+```
+
+All grasp information - 3D joints, MANO fits, camera calibrations - (this is already
+done if you run `startup.py`):
+
+```bash
+$ python scripts/download_data.py --type grasps
+```

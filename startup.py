@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 import os
 from scripts.download_data import ContactPoseDownloader
 
@@ -27,7 +29,8 @@ def startup(data_dir=None):
 
   downloader = ContactPoseDownloader()
 
-  # download 3D model marker locations
+  # download 3D models and marker locations
+  downloader.download_3d_models()
   downloader.download_markers()
 
   # download all 3D joint, object pose, camera calibration data

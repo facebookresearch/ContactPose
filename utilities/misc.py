@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 import numpy as np
 import logging
 import math
@@ -5,16 +7,23 @@ import transforms3d.euler as txe
 import transforms3d.quaternions as txq
 import argparse
 import cv2
-from thirdparty.mano.webuser.smpl_handpca_wrapper_HAND_only \
-  import load_model as load_mano_model
 
-# hacks needed for MANO Python2 code
-import os.path as osp
-import _pickle as cPickle
-import sys
-sys.modules['cPickle'] = cPickle
-sys.path.append(osp.join('thirdparty', 'mano'))
-sys.path.append(osp.join('thirdparty', 'mano', 'webuser'))
+try:
+  from thirdparty.mano.webuser.smpl_handpca_wrapper_HAND_only \
+    import load_model as load_mano_model
+  MANO_PRESENT = True
+except ImportError:
+  load_mano_model = None
+  MANO_PRESENT = False
+
+if MANO_PRESENT:
+  # hacks needed for MANO Python2 code
+  import os.path as osp
+  import _pickle as cPickle
+  import sys
+  sys.modules['cPickle'] = cPickle
+  sys.path.append(osp.join('thirdparty', 'mano'))
+  sys.path.append(osp.join('thirdparty', 'mano', 'webuser'))
 
 
 def texture_proc(colors, a=0.05, invert=False):
@@ -310,6 +319,9 @@ def mano_joints_with_fingertips(m):
 
 def load_mano_meshes(params, model_dicts, oTh=(np.eye(4), np.eye(4)),
                      flat_hand_mean=False):
+  if not MANO_PRESENT:
+    return (None, None)
+  
   out = []
   for hand_idx, mp in enumerate(params):
     if mp is None:

@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 """
 script to download ContactPose data from Dropbox
 URLs in data/urls.json
@@ -118,6 +120,10 @@ class ContactPoseDownloader(object):
     print('Extracting...')
     self._unzip_and_del(filename, osp.join('data', 'object_marker_locations'))
 
+  
+  def download_3d_models(self):
+    pass
+
 
   def download_images(self, p_num, intent, dload_dir,
                       include_objects=None):
@@ -180,7 +186,8 @@ if __name__ == '__main__':
   import sys
   from itertools import product
   parser = argparse.ArgumentParser()
-  parser.add_argument('--type', choices=('grasps', 'images', 'contact_maps'),
+  parser.add_argument('--type', choices=('grasps', 'markers', '3Dmodels',
+                                         'images', 'contact_maps'),
                       required=True)
   parser.add_argument('--p_nums', default=None,
                       help='Participant numbers E.g. 1, 1,2, or 1-5')
@@ -198,6 +205,12 @@ if __name__ == '__main__':
   downloader = ContactPoseDownloader()
   if args.type == 'grasps':
     downloader.download_grasps()
+    sys.exit(0)
+  elif args.type == 'markers':
+    downloader.download_markers()
+    sys.exit(0)
+  elif args.type == '3Dmodels':
+    downloader.download_3d_models()
     sys.exit(0)
 
   assert(args.p_nums is not None)
