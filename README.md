@@ -141,3 +141,8 @@ done if you run `startup.py`):
 ```bash
 $ python scripts/download_data.py --type grasps
 ```
+
+# TODO
+- [ ] Release object 3D models
+- [ ] MANO mesh rendering
+- [ ] Proper documentation using [Read the Docs](https://readthedocs.org)
