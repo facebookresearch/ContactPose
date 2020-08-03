@@ -103,7 +103,7 @@ class ContactPoseDownloader(object):
   def download_contact_maps(self, p_num, intent):
     p_id = 'full{:d}_{:s}'.format(p_num, intent)
     filename = osp.join(self.data_dir, '{:s}_contact_maps.zip'.format(p_id))
-    print('Downloading {:s} contact maps...'.format(p_id))
+    print('Downloading {:d} {:s} contact maps...'.format(p_num, intent))
     if not self._download_url(self.urls['contact_maps'][p_id], filename):
       print('Download unsuccessful')
       return
@@ -127,6 +127,8 @@ class ContactPoseDownloader(object):
 
   def download_images(self, p_num, intent, dload_dir,
                       include_objects=None):
+    assert osp.isdir(dload_dir),\
+      'Image download dir {:s} does not exist'.format(dload_dir)
     p_id = 'full{:d}_{:s}'.format(p_num, intent)
     # check if already extracted
     if osp.isdir(osp.join(self.data_dir, p_id)):
@@ -143,7 +145,7 @@ class ContactPoseDownloader(object):
     # download and extract
     sess_dir = osp.join(dload_dir, p_id)
     if not osp.isdir(sess_dir):
-      os.makedirs(sess_dir)
+      os.mkdir(sess_dir)
       print('Created {:s}'.format(sess_dir))
     print('Downloading {:s} images...'.format(p_id))
     object_names = list(self.urls['images'][p_id].keys())
@@ -174,7 +176,7 @@ class ContactPoseDownloader(object):
           continue
         self._unzip_and_del(osp.join(obj_dir, filename), progress=False)
       # symlink
-      if dload_dir != self.data_dir:
+      if osp.realpath(dload_dir) != osp.realpath(self.data_dir):
         src = osp.join(obj_dir, 'images_full')
         dst_dir = osp.join(self.data_dir, p_id, object_name)
         if not osp.isdir(dst_dir):
@@ -234,7 +236,8 @@ if __name__ == '__main__':
       include_objects = args.object_names
       if include_objects is not None:
         include_objects = include_objects.split(',')
-      downloader.download_images(p_num, intent, args.images_dload_dir,
+      downloader.download_images(p_num, intent,
+                                 osp.expanduser(args.images_dload_dir),
                                  include_objects=include_objects)
     else:
       raise NotImplementedError

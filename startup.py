@@ -6,27 +6,28 @@ from scripts.download_data import ContactPoseDownloader
 osp = os.path
 
 
-def startup(data_dir=None):
-  default_dir = osp.join('data', 'contactpose_data')
-  if data_dir is None:
-    data_dir = default_dir
-    print('ContactPose data directory is {:s}'.format(data_dir))
-    if not osp.isdir(data_dir):
-      os.mkdir(data_dir)
+def startup(data_dir=None, default_dir=osp.join('data', 'contactpose_data')):
+  # check that the provided data_dir is OK
+  if data_dir is not None:
+    assert data_dir!=default_dir, \
+      "If you provide --data_dir, it must not be {:s}".format(default_dir)
+    assert osp.isdir(data_dir), "If you provide --data_dir, it must exist"
   else:
-    data_dir = osp.expanduser(data_dir)
-    print('ContactPose data directory is {:s}'.format(data_dir))
+    data_dir = default_dir
+    if not osp.isdir(data_dir):
+      if osp.isfile(data_dir) or osp.islink(data_dir):
+        os.remove(data_dir)
+        print('Removed file {:s}'.format(data_dir))
+      os.mkdir(data_dir)
+
+  # symlink for easy access
+  if data_dir != default_dir:
     if osp.islink(default_dir):
       os.remove(default_dir)
-      os.symlink(data_dir, default_dir)
-    elif osp.isdir(default_dir) or osp.isfile(default_dir):
-      print('{:s} needs to be symlinked to {:s}, please delete it and re-run'.
-            format(default_dir, data_dir))
-      return
-    else:
-      os.symlink(data_dir, default_dir)
+      print('Removed symlink {:s}'.format(default_dir))
+    os.symlink(data_dir, default_dir)
     print('Symlinked to {:s} for easy access'.format(default_dir))
-
+  
   downloader = ContactPoseDownloader()
 
   # download 3D models and marker locations
@@ -40,7 +41,8 @@ def startup(data_dir=None):
   downloader.download_contact_maps(28, 'use')
 
   # download RGB-D images for participant 28, mouse 'use' grasp 
-  downloader.download_images(28, 'use', include_objects=['utah_teapot',])
+  downloader.download_images(28, 'use', data_dir,
+                             include_objects=('utah_teapot',))
 
 
 if __name__ == '__main__':
