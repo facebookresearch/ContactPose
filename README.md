@@ -36,7 +36,7 @@ The following commands should be run after activating the conda env.
 
 2. Startup by downloading grasp data (pose annotations and camera calibrations) for the entire dataset,
 contact maps for participant \#28 all 'use' intent grasps, and RGB-D images for
-participant \#28 'utah\_teapot' object, 'use' intent grasp. By default it will
+participant \#28 'bowl' object, 'use' intent grasp. By default it will
 download to `data/contactpose_data`, but you can also provide a directory of
 your choice. It will symlink that directory to `data/contactpose_data` for easy access. 
 
@@ -54,7 +54,7 @@ Downloading full28_use contact maps...
 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 96.8M/96.8M [00:03<00:00, 29.1MiB/s]
 Extracting...
 Downloading full28_use images...
-  0%|                                                                                                                                                         | 0/1 [00:00<?, ?it/s]utah_teapot
+  0%|                                                                                                                                                         | 0/1 [00:00<?, ?it/s]bowl
 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2.08G/2.08G [00:45<00:00, 45.6MiB/s]
 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:47<00:00, 47.23s/it]
 Extracting...

@@ -40,9 +40,9 @@ def startup(data_dir=None, default_dir=osp.join('data', 'contactpose_data')):
   # download contact maps for participant 28, 'use' grasps
   downloader.download_contact_maps(28, 'use')
 
-  # download RGB-D images for participant 28, mouse 'use' grasp 
+  # download RGB-D images for participant 28, bowl 'use' grasp 
   downloader.download_images(28, 'use', data_dir,
-                             include_objects=('utah_teapot',))
+                             include_objects=('bowl',))
 
 
 if __name__ == '__main__':
