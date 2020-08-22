@@ -1,6 +1,7 @@
 {
     "object_marker_locations": "https://www.dropbox.com/sh/qz0gyy7kfflv6uz/AACkPeFO8FVL0wQTXjTtGxJ9a?dl=1", 
     "grasps": "https://www.dropbox.com/sh/jh57jcrnup7rinq/AACEPPd44_fAYu9cUhsM2htua?dl=1", 
+    "object_models": "https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1",
     "contact_maps": {
         "full1_use": "https://www.dropbox.com/s/andg3se918mq1kc/full1_use.zip?dl=1", 
         "full1_handoff": "https://www.dropbox.com/s/d3ay9t0gkwwtwdb/full1_handoff.zip?dl=1", 

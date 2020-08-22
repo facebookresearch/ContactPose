@@ -94,7 +94,7 @@ Information on accessing images, poses, and calibration data.
 This is done through `scripts/download_data.py`:
 ```bash
 $ python scripts/download_data.py --help
-usage: download_data.py [-h] --type {grasps,images,contact_maps}
+usage: download_data.py [-h] --type {grasps,images,contact_maps,markers,3Dmodels}
                         [--p_nums P_NUMS] [--intents INTENTS]
                         [--images_dload_dir IMAGES_DLOAD_DIR]
 
@@ -142,7 +142,19 @@ done if you run `startup.py`):
 $ python scripts/download_data.py --type grasps
 ```
 
+# 3D Models and 3D Printing
+[STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
+[STL files with cylindrical recesses for markers](https://www.dropbox.com/sh/m14c4u2yr029f8k/AAA1yGl-k_4XEXElfmCgF1Fpa?dl=1) |
+[High-poly PLY files](https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1)
+
+The cylindrical recesses were produced using [this script](). Please see
+[this README](https://github.com/samarth-robo/contactdb_utils#3d-printing)
+for more details about 3D printing the objects.
+
 # TODO
-- [ ] Release object 3D models
+- [ x ] Release object 3D models
+- [ x ] Code for cropping images around hand-object
+- [ ] Release contact modeling ML code
+- [ ] Release ROS code used for recording the dataset
 - [ ] MANO mesh rendering
 - [ ] Proper documentation using [Read the Docs](https://readthedocs.org)

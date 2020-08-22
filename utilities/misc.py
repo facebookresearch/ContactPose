@@ -7,6 +7,7 @@ import transforms3d.euler as txe
 import transforms3d.quaternions as txq
 import argparse
 import cv2
+import matplotlib.pyplot as plt
 
 try:
   from thirdparty.mano.webuser.smpl_handpca_wrapper_HAND_only \
@@ -246,35 +247,81 @@ def default_argparse(require_p_num=True, require_intent=True,
   return parser
 
 
+def colorcode_depth_image(im):
+  assert(im.ndim == 2)
+  im = im.astype(float)
+  im /= im.max()
+  j, i = np.nonzero(im)
+  c = im[j, i]
+  im = np.zeros((im.shape[0], im.shape[1], 3))
+  im[j, i, :] = plt.cm.viridis(c)[:, :3]
+  im = (im * 255.0).astype(np.uint8)
+  return im
+
+
 def draw_hands(im, joints, colors=((0, 255, 0), (0, 0, 255)), circle_radius=3,
-               line_thickness=2):
+               line_thickness=2, offset=np.zeros(2, dtype=np.int)):
   if im is None:
     print('Invalid image')
     return im
+  if im.ndim == 2:  # depth image
+    im = colorcode_depth_image(im)
   for hand_idx, (js, c) in enumerate(zip(joints, colors)):
     if js is None:
       continue
     else:
-      js = np.round(js).astype(np.int)
+      js = np.round(js-offset[np.newaxis, :]).astype(np.int)
     for j in js:
-      im = cv2.circle(im, (j[0], j[1]), circle_radius, c, -1, cv2.LINE_AA)
+      im = cv2.circle(im, tuple(j), circle_radius, c, -1, cv2.LINE_AA)
     for finger in range(5):
       base = 4*finger + 1
-      im = cv2.line(im, (js[0][0], js[0][1]),
-                    (js[base][0], js[base][1]), (0, 0, 0),
+      im = cv2.line(im, tuple(js[0]), tuple(js[base]), (0, 0, 0),
                     line_thickness, cv2.LINE_AA)
       for j in range(3):
-        im = cv2.line(im,
-                      (js[base+j][0], js[base+j][1]),
-                      (js[base+j+1][0], js[base+j+1][1]),
+        im = cv2.line(im, tuple(js[base+j]), tuple(js[base+j+1]),
                       (0, 0, 0), line_thickness, cv2.LINE_AA)
   return im
 
 
-def draw_object_markers(im, ms, color=(0, 255, 255), circle_radius=3):
+def draw_object_markers(im, ms, color=(0, 255, 255), circle_radius=3,
+                        offset=np.zeros(2, dtype=np.int)):
+  if im.ndim == 2:  # depth image
+    im = colorcode_depth_image(im)
   for m in np.round(ms).astype(np.int):
-    im = cv2.circle(im, tuple(m), circle_radius, color, -1, cv2.LINE_AA)
+    im = cv2.circle(im, tuple(m-offset), circle_radius, color, -1, cv2.LINE_AA)
   return im
+
+
+def crop_image(im, joints, crop_size, fillvalue=[0]):
+  """
+  joints: list of 21x2 2D joint locations per each hand
+  crops the im into a crop_size square centered at the mean of all joint
+  locations
+  returns cropped image and top-left pixel position of the crop in the full image
+  """
+  if im.ndim < 3:
+    im = im[:, :, np.newaxis]
+  if isinstance(fillvalue, list) or isinstance(fillvalue, np.ndarray):
+    fillvalue = np.asarray(fillvalue).astype(im.dtype)
+  else:
+    fillvalue = np.asarray([fillvalue for _ in im.shape[2]]).astype(im.dtype)
+
+  joints = np.vstack([j for j in joints if j is not None])
+  bbcenter = np.round(np.mean(joints, axis=0)).astype(np.int)
+  im_crop = np.zeros((crop_size, crop_size, im.shape[2]), dtype=im.dtype)
+  tl = bbcenter - crop_size//2
+  br = bbcenter + crop_size//2
+  tl_crop = np.asarray([0, 0], dtype=np.int)
+  br_crop = np.asarray([crop_size, crop_size], dtype=np.int)
+  tl_spill = np.minimum(0, tl)
+  tl -= tl_spill
+  tl_crop -= tl_spill
+  br_spill = np.maximum(0, br-np.array([im.shape[1], im.shape[0]]))
+  br -= br_spill
+  br_crop -= br_spill
+  im_crop[tl_crop[1]:br_crop[1], tl_crop[0]:br_crop[0], :] = \
+    im[tl[1]:br[1], tl[0]:br[0], :]
+  return im_crop.squeeze(), tl
 
 
 def openpose2mano(o, n_joints_per_finger=4):

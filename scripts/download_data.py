@@ -122,7 +122,13 @@ class ContactPoseDownloader(object):
 
   
   def download_3d_models(self):
-    pass
+    filename = osp.join('data', '3Dmodels.zip')
+    print('Downloading 3D models...')
+    if not self._download_url(self.urls['object_models'], filename):
+      print('Download unsuccessful')
+      return
+    print('Extracting...')
+    self._unzip_and_del(filename, osp.join('data', 'object_models'))
 
 
   def download_images(self, p_num, intent, dload_dir,
