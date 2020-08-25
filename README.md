@@ -1,8 +1,13 @@
 # [ContactPose](https://contactpose.cc.gatech.edu)
 
+<figure>
+<img src="teaser.png" width="700">
+<figcaption>Example ContactPose data: Contact Maps, 3D hand pose, and RGB-D grasp images for functional grasps.</figcaption>
+</figure>
+
 Code for the ContactPose dataset released in the following paper:
 
-[ContactPose: A Dataset of Grasps with Object Contact and Hand Pose]() - 
+[ContactPose: A Dataset of Grasps with Object Contact and Hand Pose](https://contactpose.cc.gatech.edu) - 
 
 [Samarth Brahmbhatt](https://samarth-robo.github.io/),
 [Chengcheng Tang](https://scholar.google.com/citations?hl=en&user=WbG27wQAAAAJ),
@@ -30,7 +35,7 @@ year = {2020}
 1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html). Create the `contactpose` conda environment:
 `conda env create -f environment.yml`. Activate it:
 ```bash
-$ source activate contactpose
+$ conda activate contactpose
 ```
 The following commands should be run after activating the conda env.
 
@@ -86,8 +91,9 @@ $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse 
 <img src="readme_images/simple_mano.png" width="100">
 
 # [Demo notebook](demo.ipynb)
-Information on accessing images, poses, and calibration data.
+Jupyter notebook demonstrating the ContactPose dataset API - accessing images, poses, and calibration data.
 
+<img src="demo_notebook_teaser.gif">
 
 # Download Options
 
@@ -152,8 +158,8 @@ The cylindrical recesses were produced using [this script](). Please see
 for more details about 3D printing the objects.
 
 # TODO
-- [ x ] Release object 3D models
-- [ x ] Code for cropping images around hand-object
+- [x] Release object 3D models
+- [x] Code for cropping images around hand-object
 - [ ] Release contact modeling ML code
 - [ ] Release ROS code used for recording the dataset
 - [ ] MANO mesh rendering
