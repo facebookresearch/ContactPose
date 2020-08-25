@@ -95,9 +95,9 @@ Jupyter notebook demonstrating the ContactPose dataset API - accessing images, p
 
 <img src="demo_notebook_teaser.gif">
 
-# Download Options
+# Downloading ContactPose Data
 
-This is done through `scripts/download_data.py`:
+All downloads can be done through `scripts/download_data.py`:
 ```bash
 $ python scripts/download_data.py --help
 usage: download_data.py [-h] --type {grasps,images,contact_maps,markers,3Dmodels}
@@ -156,6 +156,35 @@ $ python scripts/download_data.py --type grasps
 The cylindrical recesses were produced using [this script](). Please see
 [this README](https://github.com/samarth-robo/contactdb_utils#3d-printing)
 for more details about 3D printing the objects.
+
+# Other Documentation
+## 21 Joint Format 
+The ordering and placement of joints follows the
+[OpenPose format](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#hand-output-format).
+In 3D, the joints are at the center of the finger-cylinders, not on the surface.
+The functions `mano2openpose()` and `mano_joints_with_fingertips()` in `utilities/misc.py`
+convert the joints from the MANO model to this format. For example, see how 
+they are used in `load_mano_meshes()`.
+
+## Transform Tree
+Transform matrices are consistently named in the code according to the 
+following transform tree. For example, `oTh` is the pose of the hand w.r.t.
+the object.
+```
+world
+|
+|----wTc----camera
+|
+|----wTo----object
+            |
+            |----oTh----hand
+                        |
+                        |----hTm----MANO
+```
+Other matrices can be composed. For example, the pose of an object in the camera
+coordinate frame `cTo = inv(wTc) * wTo`. This naming convention, explained in
+[this blog post](https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html)
+makes keeping track of 3D transforms easier.
 
 # TODO
 - [x] Release object 3D models
