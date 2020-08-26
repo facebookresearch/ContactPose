@@ -13,13 +13,13 @@ from . import misc as mutils
 osp = os.path
 
 
-def get_object_names(p_num, intent):
+def get_object_names(p_num, intent, ignore_hp=True):
   """
   returns list of objects grasped in this session
   """
   sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
   sess_dir = osp.join('data', 'contactpose_data', sess_dir)
-  return list(next(os.walk(sess_dir))[1])
+  return [o for o in next(os.walk(sess_dir))[1] if o not in ['hands', 'palm_print']]
 
 
 def get_intents(p_num, object_name):
@@ -56,7 +56,7 @@ class ContactPose(object):
   def __init__(self, p_num, intent, object_name, mano_pose_params=15):
     if (object_name == 'palm_print') or (object_name == 'hands'):
       print('This class is not meant to be used with palm_print or hands')
-      return
+      raise ValueError
     self.p_num = p_num
     self.intent = intent
     self.object_name = object_name

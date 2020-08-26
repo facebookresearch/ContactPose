@@ -4,7 +4,7 @@
 # [ContactPose](https://contactpose.cc.gatech.edu)
 
 <figure>
-<img src="teaser.png" width="700">
+<img src="readme_images/teaser.png" width="700">
 <figcaption>Example ContactPose data: Contact Maps, 3D hand pose, and RGB-D grasp images for functional grasps.</figcaption>
 </figure>
 
@@ -96,7 +96,7 @@ $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse 
 # [Demo notebook](demo.ipynb)
 Jupyter notebook demonstrating the ContactPose dataset API - accessing images, poses, and calibration data.
 
-<img src="demo_notebook_teaser.gif">
+![](readme_images/demo_notebook_teaser.gif)
 
 # Downloading ContactPose Data
 
@@ -188,6 +188,8 @@ Other matrices can be composed. For example, the pose of an object in the camera
 coordinate frame `cTo = inv(wTc) * wTo`. This naming convention, explained in
 [this blog post](https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html)
 makes keeping track of 3D transforms easier.
+
+- [data analysis](docs/data_analysis.md)
 
 # TODO
 - [x] Release object 3D models

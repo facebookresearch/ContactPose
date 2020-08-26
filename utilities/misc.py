@@ -8,6 +8,7 @@ import transforms3d.quaternions as txq
 import argparse
 import cv2
 import matplotlib.pyplot as plt
+import argparse
 
 try:
   from thirdparty.mano.webuser.smpl_handpca_wrapper_HAND_only \
@@ -236,7 +237,6 @@ def average_quaternions(qs, ws=None):
 
 def default_argparse(require_p_num=True, require_intent=True,
                      require_object_name=True):
-  import argparse
   parser = argparse.ArgumentParser()
   parser.add_argument('--p_num', type=int, help='Participant number (1-50)',
                       required=require_p_num)
@@ -245,6 +245,42 @@ def default_argparse(require_p_num=True, require_intent=True,
   parser.add_argument('--object_name', help="Name of object",
                       required=require_object_name)
   return parser
+
+
+def default_multiargparse():
+  from utilities.dataset import get_p_nums
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--p_num',
+                      help='Participant number, comma or - separated, ignore for all participants',
+                      default=None)
+  parser.add_argument('--intent', choices=('use', 'handoff', 'use,handoff'),
+                      help='Grasp intent', default='use,handoff')
+  parser.add_argument('--object_name',
+                      help="Name of object, comma separated, ignore for all objects",
+                      default=None)
+  args = parser.parse_args()
+  p_nums = args.p_num
+  if p_nums is None:
+    p_nums = list(range(1, 51))
+  elif '-' in p_nums:
+    first, last = p_nums.split('-')
+    p_nums = list(range(int(first), int(last)+1))
+  else:
+    p_nums = [int(p) for p in p_nums.split(',')]
+
+  intents = args.intent.split(',')
+
+  object_names = args.object_name
+  if object_names is not None:
+    object_names = object_names.split(',')
+    all_p_nums = []
+    for intent in intents:
+      for object_name in object_names:
+        all_p_nums.extend([pn for pn in p_nums if pn in
+                           get_p_nums(object_name, intent)])
+    p_nums = list(set(all_p_nums))
+
+  return p_nums, intents, object_names
 
 
 def colorcode_depth_image(im):
