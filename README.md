@@ -195,8 +195,8 @@ makes keeping track of 3D transforms easier.
 - [x] Release object 3D models
 - [x] Code for cropping images around hand-object
 - [ ] Release contact modeling ML code
-- [ ] Release data analysis code
-- [ ] Background randomization support
+- [ ] Release data analysis and MANO fitting code
+- [ ] RGB-D image background randomization support
 - [ ] Release ROS code used for recording the dataset
 - [ ] MANO and object mesh rendering
 - [ ] Documentation using [Read the Docs](https://readthedocs.org)
