@@ -39,6 +39,8 @@ year = {2020}
 - [x] Release object 3D models
 - [x] Code for cropping images around hand-object
 - [ ] Release contact modeling ML code
+- [ ] Release data analysis and MANO fitting code
+- [ ] RGB-D image background randomization support
 - [ ] Release ROS code used for recording the dataset
-- [ ] MANO mesh rendering
-- [ ] Proper documentation using [Read the Docs](https://readthedocs.org)
+- [ ] MANO and object mesh rendering
+- [ ] Documentation using [Read the Docs](https://readthedocs.org)
