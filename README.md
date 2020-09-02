@@ -20,7 +20,8 @@ Code for the ContactPose dataset released in the following paper:
 
 **ECCV 2020**.
 
-Please visit [http://contactpose.cc.gatech.edu](http://contactpose.cc.gatech.edu) to explore the dataset.
+- [Explore the dataset](https://contactpose.cc.gatech.edu/contactpose_explorer.html)
+- [hand-object contact ML code](https://github.com/samarth-robo/ContactPose-ML)
 
 ## Citation
 ```
@@ -38,7 +39,7 @@ year = {2020}
 # Updates
 - [x] Release object 3D models
 - [x] Code for cropping images around hand-object
-- [ ] Release contact modeling ML code
+- [x] Release contact modeling ML code
 - [ ] Release data analysis and MANO fitting code
 - [ ] RGB-D image background randomization support
 - [ ] Release ROS code used for recording the dataset
