@@ -110,11 +110,9 @@ class ContactPose(object):
     self._K   = {}  # camera intrinsics
     for camera_name in self.valid_cameras:
       cam = ann['cameras'][camera_name]
-      K = [[cam['K']['fx'], 0, cam['K']['cx']],
-           [0, cam['K']['fy'], cam['K']['cy']],
-           [0, 0, 1]]
-      self._K[camera_name] = \
-        mutils.get_A(camera_name, cam['K']['width'], cam['K']['height']) @ K
+      self._K[camera_name] = np.array([[cam['K']['fx'], 0, cam['K']['cx']],
+                                      [0, cam['K']['fy'], cam['K']['cy']],
+                                      [0, 0, 1]])
       # camera pose w.r.t. world
       wTc = mutils.pose_matrix(cam['wTc'])
       self._cTo[camera_name] = [np.linalg.inv(oTw @ wTc) for oTw in oTws]
@@ -130,17 +128,15 @@ class ContactPose(object):
       this_ox = {}
       this_om = {}
       for camera_name in self.valid_cameras:
-        this_om[camera_name] = \
-          mutils.project(self._K[camera_name],
-                         mutils.tform_points(self._cTo[camera_name][frame_idx], oM))
+        this_om[camera_name] = mutils.project(self.P(camera_name, frame_idx),
+                                              oM)
         x = []
         for hand_idx in range(2):
           if hand_idx not in self._valid_hands:
             x.append(None)
           else:
-            x.append(mutils.project(self._K[camera_name],
-                                    mutils.tform_points(self._cTo[camera_name][frame_idx],
-                                                        self._oX[frame_idx][hand_idx])))
+            x.append(mutils.project(self.P(camera_name, frame_idx),
+                                    self._oX[frame_idx][hand_idx]))
         this_ox[camera_name] = tuple(x)
       self._ox.append(this_ox)
       self._om.append(this_om)
@@ -204,7 +200,7 @@ class ContactPose(object):
   @property
   def mano_params(self):
     """
-    List of 2 [left, rigtht]. Each element is None or a dict containing
+    List of 2 [left, right]. Each element is None or a dict containing
     'pose' (PCA pose space of dim self._mano_pose_params),
     'betas' (PCA shape space), and root transform 'hTm'
     """
@@ -224,7 +220,13 @@ class ContactPose(object):
         'hTm': hTm,
       })
     return out
-
+  
+  def im_size(self, camera_name):
+    """
+    (width, height) in pixels
+    """
+    return (960, 540) if camera_name == 'kinect2_middle' else (540, 960)
+  
   def image_filenames(self, mode, frame_idx):
     """
     return dict with full image filenames for all valid cameras
@@ -245,8 +247,25 @@ class ContactPose(object):
   def K(self, camera_name):
     """
     Camera intrinsics 3x3
+    You will almost never need this. Use self.P() for projection
     """
     return self._K[camera_name]
+
+  def A(self, camera_name):
+    """
+    Affine transform to be applied to 2D points after projection
+    Included in self.P
+    """
+    return mutils.get_A(camera_name, 960, 540)
+
+  def P(self, camera_name, frame_idx):
+    """
+    3x4 3D -> 2D projection matrix
+    Use this for all projection operations, not self.K
+    """
+    P = self.K(camera_name) @ self.object_pose(camera_name, frame_idx)[:3]
+    P = self.A(camera_name) @ P
+    return P
 
   def object_pose(self, camera_name, frame_idx):
     """

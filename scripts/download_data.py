@@ -209,7 +209,7 @@ if __name__ == '__main__':
                         'download. All other types download data for all '+\
                         'objects in that particular p_num, intent combo')
   parser.add_argument('--images_dload_dir', default=osp.join('data', 'contactpose_data'),
-                      help='Directory where images will be downloaded.'
+                      help='Directory where images will be downloaded. '
                       'They will be symlinked to the appropriate location')
   args = parser.parse_args()
 
