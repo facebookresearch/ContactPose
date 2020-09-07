@@ -43,5 +43,5 @@ year = {2020}
 - [ ] Release data analysis and MANO fitting code
 - [ ] RGB-D image background randomization support
 - [ ] Release ROS code used for recording the dataset
-- [ ] MANO and object mesh rendering
+- [x] MANO and object mesh rendering (**new**)
 - [ ] Documentation using [Read the Docs](https://readthedocs.org)

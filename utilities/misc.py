@@ -149,20 +149,21 @@ def tform_points(T, X):
   return X
 
 
-def project(K, X):
+def project(P, X):
   """
   X: Nx3
-  K: 3x3
+  P: 3x4 projection matrix
   returns Nx2 perspective projections
   """
-  x = K @ X.T
+  X = np.vstack((X.T, np.ones(len(X))))
+  x = P @ X
   x = x[:2] / x[2]
   return x.T
 
 
 def get_A(camera_name, W, H):
   """
-  Get the euclidean transform matrix representing the camera orientation
+  Get the affine transformation matrix applied after 3D->2D projection
   """
   def flipud(H):
       return np.asarray([[1, 0, 0], [0, -1, H], [0, 0, 1]])

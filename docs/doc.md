@@ -4,6 +4,7 @@
 - [Getting Started](#getting-started)
 - [Demo Jupyter Notebook](#demo-notebook)
 - [Downloading Data](#downloading-data)
+- [Object and hand depth maps and masks](rendering.md)
 - [3D Models and 3D Printing](#3d-models-and-3d-printing)
 - [Data Analysis](data_analysis.md)
 - [Miscellaneous](#miscellaneous)
