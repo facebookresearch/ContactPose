@@ -1,5 +1,5 @@
 # Rendering and Masking Operations
-These operations allow you to render depth maps of the object and hand in each image. You can then derive masks by thresholding the depth images.
+These operations allow you to render depth maps of the object and hand in each image. You can then derive masks by thresholding the depth images. All rendering is done with [pyrender](https://pyrender.readthedocs.io/en/latest/).
 
 ## Setup
 It is important to install pyrender within the `contactpose` conda environment. In our experience pyrender headless rendering works only in Linux. The following instructions are adapted from the [official installation guide](https://pyrender.readthedocs.io/en/latest/install/index.html).
