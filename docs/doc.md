@@ -4,9 +4,9 @@
 - [Getting Started](#getting-started)
 - [Demo Jupyter Notebook](#demo-notebook)
 - [Downloading Data](#downloading-data)
-- [Object and hand depth maps and masks](rendering.md)
+- [Object and Hand depth maps and masks](#object-and-hand-depth-maps-and-masks)
 - [3D Models and 3D Printing](#3d-models-and-3d-printing)
-- [Data Analysis](data_analysis.md)
+- [Data Analysis](#data-analysis)
 - [Miscellaneous](#miscellaneous)
 
 # Getting Started
@@ -127,6 +127,8 @@ done if you run `startup.py`):
 $ python scripts/download_data.py --type grasps
 ```
 
+# [Object and Hand Depth Maps and Masks](rendering.md)
+
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
 [STL files with cylindrical recesses for markers](https://www.dropbox.com/sh/m14c4u2yr029f8k/AAA1yGl-k_4XEXElfmCgF1Fpa?dl=1) |
@@ -135,6 +137,8 @@ $ python scripts/download_data.py --type grasps
 The cylindrical recesses were produced using [this script](). Please see
 [this README](https://github.com/samarth-robo/contactdb_utils#3d-printing)
 for more details about 3D printing the objects.
+
+# [Data Analysis](data_analysis.md)
 
 # Miscellaneous
 ## 21 Joint Format 
