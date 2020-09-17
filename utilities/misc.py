@@ -8,7 +8,6 @@ import transforms3d.quaternions as txq
 import argparse
 import cv2
 import matplotlib.pyplot as plt
-import argparse
 
 try:
   from thirdparty.mano.webuser.smpl_handpca_wrapper_HAND_only \
@@ -152,7 +151,7 @@ def tform_points(T, X):
 def project(P, X):
   """
   X: Nx3
-  P: 3x4 projection matrix
+  P: 3x4 projection matrix, ContactPose.P or K @ cTo
   returns Nx2 perspective projections
   """
   X = np.vstack((X.T, np.ones(len(X))))
@@ -161,7 +160,7 @@ def project(P, X):
   return x.T
 
 
-def get_A(camera_name, W, H):
+def get_A(camera_name, W=960, H=540):
   """
   Get the affine transformation matrix applied after 3D->2D projection
   """
@@ -403,7 +402,7 @@ def mano_joints_with_fingertips(m):
 
 def load_mano_meshes(params, model_dicts, oTh=(np.eye(4), np.eye(4)),
                      flat_hand_mean=False):
-  if not MANO_PRESENT:
+  if not MANO_PRESENT or model_dicts is None:
     return (None, None)
   
   out = []

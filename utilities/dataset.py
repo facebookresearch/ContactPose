@@ -53,7 +53,12 @@ class ContactPose(object):
   Base class for accessing the ContactPose dataset
   """
   _mano_dicts = None  # class variable so that large data is not loaded repeatedly
-  def __init__(self, p_num, intent, object_name, mano_pose_params=15):
+  def __init__(self, p_num, intent, object_name, mano_pose_params=15,
+               load_mano=True):
+    """
+    load_mano: Flag can be used to prevent loading MANO hand models, which is
+    time consuming
+    """
     if (object_name == 'palm_print') or (object_name == 'hands'):
       print('This class is not meant to be used with palm_print or hands')
       raise ValueError
@@ -143,7 +148,7 @@ class ContactPose(object):
 
 
     # check if MANO code and models are present
-    if mutils.MANO_PRESENT:
+    if mutils.MANO_PRESENT and load_mano:
       # load MANO data for the class
       if ContactPose._mano_dicts is not None:
         return
@@ -153,7 +158,7 @@ class ContactPose(object):
                             'MANO_{:s}.pkl'.format(hand_name))
         with open(filename, 'rb') as f:
           ContactPose._mano_dicts.append(pickle.load(f, encoding='latin1'))
-    else:
+    elif load_mano:
       print('MANO code was not detected, please follow steps in README.md. '
             'mano_meshes() will return (None, None)')
 

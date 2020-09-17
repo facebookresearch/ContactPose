@@ -5,6 +5,7 @@
 - [Demo Jupyter Notebook](#demo-notebook)
 - [Downloading Data](#downloading-data)
 - [Object and Hand depth maps and masks](#object-and-hand-depth-maps-and-masks)
+- [Image Preprocessing](#image-preprocessing)
 - [3D Models and 3D Printing](#3d-models-and-3d-printing)
 - [Data Analysis](#data-analysis)
 - [Miscellaneous](#miscellaneous)
@@ -128,6 +129,35 @@ $ python scripts/download_data.py --type grasps
 ```
 
 # [Object and Hand Depth Maps and Masks](rendering.md)
+
+# Image Preprocessing
+`scripts/preprocess_images.py` crops RGB and depth images and randomizes the
+background of RGB images. It also saves information about the projected 
+visible object mesh vertices. This data is useful for
+[training image-based contact models](https://github.com/samarth-robo/ContactPose-ML/tree/images).
+```bash
+(contactpose) $ python scripts/preprocess_images.py --p_num 28 --intent use --object_name bowl --background_images_dir <DIR>
+Inspecting background images directory...
+Found 128 images
+28:use:bowl:kinect2_left
+  2%|██▌                                                                                                                                           | 10/558 [00:03<03:01,  3.02it/s]
+28:use:bowl:kinect2_middle
+  2%|██▌                                                                                                                                           | 10/558 [00:03<02:47,  3.27it/s]
+28:use:bowl:kinect2_right
+  2%|██▌                                                                                                                                           | 10/558 [00:08<07:28,  1.22it/s]
+```
+<figure>
+  <img src="../readme_images/preprocessing_left.png">
+  <figcaption>RGB - left</figcaption>
+</figure>
+<figure>
+  <img src="../readme_images/preprocessing_middle.png">
+  <figcaption>RGB - middle</figcaption>
+</figure>
+<figure>
+  <img src="../readme_images/preprocessing_right.png">
+  <figcaption>RGB - right</figcaption>
+</figure>
 
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 

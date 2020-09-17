@@ -41,7 +41,7 @@ year = {2020}
 - [x] [Code for cropping images around hand-object](demo.ipynb)
 - [x] [Release contact modeling ML code](https://github.com/samarth-robo/ContactPose-ML)
 - [ ] Release data analysis and MANO fitting code
-- [ ] RGB-D image background randomization support
+- [x] [RGB-D image background randomization support](docs/doc.md#image-preprocessing)
 - [ ] Release ROS code used for recording the dataset
 - [x] [MANO and object mesh rendering](docs/rendering.md) (**new**)
 - [ ] Documentation using [Read the Docs](https://readthedocs.org)
