@@ -148,15 +148,9 @@ Found 128 images
 ```
 <figure>
   <img src="../readme_images/preprocessing_left.png" width="200">
-  <figcaption>RGB - left</figcaption>
-</figure>
-<figure>
   <img src="../readme_images/preprocessing_middle.png" width="200">
-  <figcaption>RGB - middle</figcaption>
-</figure>
-<figure>
   <img src="../readme_images/preprocessing_right.png" width="200">
-  <figcaption>RGB - right</figcaption>
+  <figcaption>Cropped RGB images with randomized backgrounds - left, middle, and right</figcaption>
 </figure>
 
 # 3D Models and 3D Printing
