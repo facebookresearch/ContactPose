@@ -146,12 +146,11 @@ Found 128 images
 28:use:bowl:kinect2_right
   2%|██▌                                                                                                                                           | 10/558 [00:08<07:28,  1.22it/s]
 ```
-<figure>
+<p align="middle">
   <img src="../readme_images/preprocessing_left.png" width="200">
   <img src="../readme_images/preprocessing_middle.png" width="200">
   <img src="../readme_images/preprocessing_right.png" width="200">
-  <figcaption>Cropped RGB images with randomized backgrounds - left, middle, and right</figcaption>
-</figure>
+</p>
 
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
