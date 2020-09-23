@@ -147,15 +147,15 @@ Found 128 images
   2%|██▌                                                                                                                                           | 10/558 [00:08<07:28,  1.22it/s]
 ```
 <figure>
-  <img src="../readme_images/preprocessing_left.png">
+  <img src="../readme_images/preprocessing_left.png" width="200">
   <figcaption>RGB - left</figcaption>
 </figure>
 <figure>
-  <img src="../readme_images/preprocessing_middle.png">
+  <img src="../readme_images/preprocessing_middle.png" width="200">
   <figcaption>RGB - middle</figcaption>
 </figure>
 <figure>
-  <img src="../readme_images/preprocessing_right.png">
+  <img src="../readme_images/preprocessing_right.png" width="200">
   <figcaption>RGB - right</figcaption>
 </figure>
 
