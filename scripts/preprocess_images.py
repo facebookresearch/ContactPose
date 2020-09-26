@@ -17,8 +17,8 @@ osp = os.path
 
 
 def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
-               do_rgb=True, do_depth=True, depth_percentile_thresh=30,
-               mask_dilation=5):
+               do_rgb=True, do_depth=True, do_grabcut=True,
+               depth_percentile_thresh=30, mask_dilation=5):
   print('Inspecting background images directory...')
   rim_filenames = next(os.walk(background_images_dir))[-1]
   rim_filenames = [osp.join(background_images_dir, f) for f in rim_filenames]
@@ -58,6 +58,23 @@ def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
       A = np.asarray([[1, 0, -crop_tl[0]], [0, 1, -crop_tl[1]], [0, 0, 1]]) @ A
       cTo = cp.object_pose(camera_name, frame_idx)
       P = this_A @ K @ cTo[:3]
+      
+      if do_depth: # save preprocessed depth image
+        filename = osp.join(output_dir, 'depth', out_filename)
+        cv2.imwrite(filename, depth_im)
+      # save projection matrix
+      filename = osp.join(output_dir, 'projections',
+                          out_filename.replace('.png', '_P.txt'))
+      np.savetxt(filename, P)
+      # save projection information
+      filename = osp.join(output_dir, 'projections',
+                          out_filename.replace('.png', '_verts.npy'))
+      idx = np.where(visible)[0]
+      projs = np.vstack((cxx[idx].T, idx)).T
+      np.save(filename, projs)
+    
+      if not do_rgb:
+        continue
 
       # foreground mask
       cxx, visible = renderer.object_visibility_and_projections(cTo)
@@ -79,44 +96,41 @@ def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
         print('Depth image {:s} all 0s, skipping frame'.format(filename))
         continue
       thresh = min(pthresh, mthresh)
-      mask = 255 * np.logical_and(depth_im > 0, depth_im <= thresh)
-      mask = cv2.dilate(mask.astype(np.uint8), np.ones(
+
+      # mask derived from depth
+      dmask = 255 * np.logical_and(depth_im > 0, depth_im <= thresh)
+      dmask = cv2.dilate(dmask.astype(np.uint8), np.ones(
           (mask_dilation, mask_dilation), dtype=np.uint8))
+      # mask derived from color
       cmask_green = np.logical_and(rgb_im[:, :, 1] > rgb_im[:, :, 0],
                                     rgb_im[:, :, 1] > rgb_im[:, :, 2])
       cmask_white = np.mean(rgb_im, axis=2) > 225
       cmask = np.logical_not(np.logical_or(cmask_green, cmask_white))
-      mask = np.logical_and(mask>0, cmask)
-      mask = mask[:, :, np.newaxis] > 0
+      mask = np.logical_and(dmask>0, cmask)
+      if do_grabcut:
+        mask = mutils.grabcut_mask(rgb_im, mask)
 
       # randomize background
-      while True:
+      count = 0
+      while count < len(rim_filenames):
         random_idx = np.random.choice(len(rim_filenames))
         random_im = cv2.imread(rim_filenames[random_idx], cv2.IMREAD_COLOR)
         if np.any(np.asarray(random_im.shape[:2]) <= np.asarray(rgb_im.shape[:2])):
+          count += 1
           continue
         x = np.random.choice(random_im.shape[1] - rgb_im.shape[1])
         y = np.random.choice(random_im.shape[0] - rgb_im.shape[0])
         random_im = random_im[y:y+rgb_im.shape[0], x:x+rgb_im.shape[1], :]
         break
+      else:
+        print('ERROR: All random images are smaller than {:d}x{:d}!'.
+              format(crop_size, crop_size))
+        break
       
-      if do_rgb:  # save preprocessed RGB image
-        im = mask*rgb_im + (1-mask)*random_im
-        filename = osp.join(output_dir, 'color', out_filename)
-        cv2.imwrite(filename, im)
-      if do_depth: # save preprocessed depth image
-        filename = osp.join(output_dir, 'depth', out_filename)
-        cv2.imwrite(filename, depth_im)
-      # save projection matrix
-      filename = osp.join(output_dir, 'projections',
-                          out_filename.replace('.png', '_P.txt'))
-      np.savetxt(filename, P)
-      # save projection information
-      filename = osp.join(output_dir, 'projections',
-                          out_filename.replace('.png', '_verts.npy'))
-      idx = np.where(visible)[0]
-      projs = np.vstack((cxx[idx].T, idx)).T
-      np.save(filename, projs)
+      mask = mask[:, :, np.newaxis]
+      im = mask*rgb_im + (1-mask)*random_im
+      filename = osp.join(output_dir, 'color', out_filename)
+      cv2.imwrite(filename, im)
       
 
 if __name__ == '__main__':
@@ -126,5 +140,7 @@ if __name__ == '__main__':
   parser.add_argument('--background_images_dir', required=True,
                       help='Directory containing background images e.g. COCO')
   parser.add_argument('--crop_size', default=256, type=int)
+  parser.add_argument('--no_refinement', action='store_false', dest='do_grabcut',
+                      help='No refinement of masks with GrabCut')
   args = parser.parse_args()
   preprocess(**vars(args))

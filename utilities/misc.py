@@ -431,3 +431,24 @@ def load_mano_meshes(params, model_dicts, oTh=(np.eye(4), np.eye(4)),
       'faces': np.asarray(m.f),
     })
   return out
+
+
+def grabcut_mask(src, mask, n_iters=10):
+  """
+  Refines noisy mask edges using Grabcut on image src
+  """
+  assert(src.shape[:2] == mask.shape[:2])
+  y, x = np.where(mask)
+  gmask = np.zeros((src.shape[0], src.shape[1]), dtype=np.uint8)  # GC_BGD
+  gmask[y.min():y.max()+1, x.min():x.max()+1] = 2  # GC_PR_BGD
+  gmask[y, x] = 3  # GC_PR_FGD
+
+  bgdModel = np.zeros((1,65),np.float64)
+  fgdModel = np.zeros((1,65),np.float64)
+
+  gmask, bgdModel, fgdModel = \
+      cv2.grabCut(src, gmask, (0, 0, 0, 0), bgdModel, fgdModel, n_iters,
+                  mode=cv2.GC_INIT_WITH_MASK)
+
+  mask = np.logical_or(gmask==1, gmask==3)
+  return mask
