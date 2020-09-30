@@ -38,7 +38,7 @@ year = {2020}
 
 # Licensing
 - Code: [MIT License](LICENSE.txt)
-- 3D models: each model has its own license, see `README.txt` and `licenses.json` in the [downloads]((docs/doc.md#3d-models-and-3d-printing))
+- 3D models: each model has its own license, see `README.txt` and `licenses.json` in the [downloads](docs/doc.md#3d-models-and-3d-printing)
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
