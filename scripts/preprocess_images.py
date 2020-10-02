@@ -4,7 +4,7 @@ randomizing background (RGB only)
 NOTE: Requites rendering setup, see docs/rendering.py
 """
 import init_paths
-from utilities.dataset import ContactPose
+from utilities.dataset import ContactPose, get_object_names
 from utilities.rendering import DepthRenderer
 import utilities.misc as mutils
 
@@ -16,13 +16,22 @@ from tqdm import tqdm
 osp = os.path
 
 
-def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
+def inspect_dir(dirname):
+  assert(osp.isdir(dirname))
+  print('Inspecting {:s}...'.format(dirname))
+  filenames = next(os.walk(dirname))[-1]
+  ilenames = [osp.join(dirname, f) for f in filenames]
+  print('Found {:d} images'.format(len(filenames)))
+  return filenames
+
+
+def preprocess(p_num, intent, object_name, rim_filenames_or_dir, crop_size,
                do_rgb=True, do_depth=True, do_grabcut=True,
                depth_percentile_thresh=30, mask_dilation=5):
-  print('Inspecting background images directory...')
-  rim_filenames = next(os.walk(background_images_dir))[-1]
-  rim_filenames = [osp.join(background_images_dir, f) for f in rim_filenames]
-  print('Found {:d} images'.format(len(rim_filenames)))
+  if isinstance(rim_filenames_or_dir, list):
+    rim_filenames = rim_filenames_or_dir[:]
+  else:
+    rim_filenames = inspect_dir(rim_filenames_or_dir)
   cp = ContactPose(p_num, intent, object_name, load_mano=False)
 
   for camera_name in cp.valid_cameras:
@@ -66,15 +75,6 @@ def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
       filename = osp.join(output_dir, 'projections',
                           out_filename.replace('.png', '_P.txt'))
       np.savetxt(filename, P)
-      # save projection information
-      filename = osp.join(output_dir, 'projections',
-                          out_filename.replace('.png', '_verts.npy'))
-      idx = np.where(visible)[0]
-      projs = np.vstack((cxx[idx].T, idx)).T
-      np.save(filename, projs)
-    
-      if not do_rgb:
-        continue
 
       # foreground mask
       cxx, visible = renderer.object_visibility_and_projections(cTo)
@@ -86,6 +86,16 @@ def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
       visible = np.logical_and(visible, cx[:, 1] < rgb_im.shape[0])
       cx = cx[visible]
 
+      # save projection information
+      filename = osp.join(output_dir, 'projections',
+                          out_filename.replace('.png', '_verts.npy'))
+      idx = np.where(visible)[0]
+      projs = np.vstack((cxx[idx].T, idx)).T
+      np.save(filename, projs)
+    
+      if not do_rgb:
+        continue
+      
       obj_depths = depth_im[cx[:, 1], cx[:, 0]]
       obj_depths = obj_depths[obj_depths > 0]
       all_depths = depth_im[depth_im > 0]
@@ -133,8 +143,20 @@ def preprocess(p_num, intent, object_name, background_images_dir, crop_size,
       cv2.imwrite(filename, im)
       
 
+def preprocess_all(p_nums, intents, object_names, background_images_dir, *args,
+                   **kwargs):
+  rim_filenames = inspect_dir(background_images_dir)
+  for p_num in p_nums:
+    for intent in intents:
+      if object_names is None:
+        object_names = get_object_names(p_num, intent)
+      for object_name in object_names:
+        preprocess(p_num, intent, object_name, rim_filenames_or_dir=rim_filenames,
+                   *args, **kwargs)
+
+
 if __name__ == '__main__':
-  parser = mutils.default_argparse()
+  parser = mutils.default_multiargparse()
   parser.add_argument('--no_rgb', action='store_false', dest='do_rgb')
   parser.add_argument('--no_depth', action='store_false', dest='do_depth')
   parser.add_argument('--background_images_dir', required=True,
@@ -143,4 +165,6 @@ if __name__ == '__main__':
   parser.add_argument('--no_refinement', action='store_false', dest='do_grabcut',
                       help='No refinement of masks with GrabCut')
   args = parser.parse_args()
-  preprocess(**vars(args))
+
+  p_nums, intents, object_names, args = mutils.parse_multiargs(args)
+  preprocess_all(p_nums, intents, object_names, **vars(args))

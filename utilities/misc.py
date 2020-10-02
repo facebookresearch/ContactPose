@@ -248,17 +248,25 @@ def default_argparse(require_p_num=True, require_intent=True,
 
 
 def default_multiargparse():
-  from utilities.dataset import get_p_nums
   parser = argparse.ArgumentParser()
   parser.add_argument('--p_num',
-                      help='Participant number, comma or - separated, ignore for all participants',
+                      help='Participant numbers, comma or - separated, ignore for all participants',
                       default=None)
   parser.add_argument('--intent', choices=('use', 'handoff', 'use,handoff'),
-                      help='Grasp intent', default='use,handoff')
+                      help='Grasp intents, comma separated', default='use,handoff')
   parser.add_argument('--object_name',
-                      help="Name of object, comma separated, ignore for all objects",
+                      help="Object names, comma separated, ignore for all objects",
                       default=None)
-  args = parser.parse_args()
+  return parser
+
+
+def parse_multiargs(args):
+  """
+  parses the p_num, intent, and object_name arguments from a parser created
+  with default_multiargparse
+  """
+  from utilities.dataset import get_p_nums
+  
   p_nums = args.p_num
   if p_nums is None:
     p_nums = list(range(1, 51))
@@ -280,7 +288,11 @@ def default_multiargparse():
                            get_p_nums(object_name, intent)])
     p_nums = list(set(all_p_nums))
 
-  return p_nums, intents, object_names
+  delattr(args, 'p_num')
+  delattr(args, 'intent')
+  delattr(args, 'object_name')
+
+  return p_nums, intents, object_names, args
 
 
 def colorcode_depth_image(im):

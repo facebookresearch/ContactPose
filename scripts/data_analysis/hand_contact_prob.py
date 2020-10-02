@@ -78,7 +78,9 @@ def show_hand_contact_prob(contact_prob, hand_idx=1):
 
 
 if __name__ == '__main__':
-  p_nums, intents, object_names = mutils.default_multiargparse()
+  parser = mutils.default_multiargparse()
+  args = parser.parse_args()
+  p_nums, intents, object_names, args = mutils.parse_multiargs(args)
   hand_idx = 1
   p = calc_hand_contact_prob(p_nums, intents, object_names, hand_idx=hand_idx)
   show_hand_contact_prob(p, hand_idx=hand_idx)
