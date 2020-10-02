@@ -82,4 +82,4 @@ unset OLD_CPLUS_INCLUDE_PATH
 
 
 ## [Demo Notebook](../rendering.ipynb)
-![](../readme_images/rendering_notebook_teaser.gif)
+[![Demo Notebook](../readme_images/rendering_notebook_teaser.gif)](../rendering.ipynb)
