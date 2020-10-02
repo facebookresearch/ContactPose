@@ -70,10 +70,10 @@ $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse 
 `simple_mano` mode
 <img src="../readme_images/simple_mano.png" width="100">
 
-# [Demo notebook](demo.ipynb)
+# [Demo Notebook](demo.ipynb)
 Jupyter notebook demonstrating the ContactPose dataset API - accessing images, poses, and calibration data.
 
-![](../readme_images/demo_notebook_teaser.gif)
+[![Demo Notebook](../readme_images/demo_notebook_teaser.gif)](demo.ipynb)
 
 # Downloading Data
 
@@ -129,6 +129,7 @@ $ python scripts/download_data.py --type grasps
 ```
 
 # [Object and Hand Depth Maps and Masks](rendering.md)
+[![](../readme_images/rendering_teaser.png)](rendering.md)
 
 # Image Preprocessing
 `scripts/preprocess_images.py` crops RGB and depth images and randomizes the
