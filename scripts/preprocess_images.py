@@ -1,3 +1,5 @@
+# (c) Facebook, Inc. and its affiliates. Confidential and proprietary.
+
 """
 Preprocesses images for ML training by cropping (RGB and depth), and 
 randomizing background (RGB only)
