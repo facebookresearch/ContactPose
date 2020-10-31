@@ -42,6 +42,7 @@ year = {2020}
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
+- [ ] [Speed up dataset download by organizing images into videos](https://github.com/facebookresearch/ContactPose/issues/3)
 - [x] [Release object 3D models](docs/doc.md#3d-models-and-3d-printing)
 - [x] [Code for cropping images around hand-object](demo.ipynb)
 - [x] [Release contact modeling ML code](https://github.com/samarth-robo/ContactPose-ML)
