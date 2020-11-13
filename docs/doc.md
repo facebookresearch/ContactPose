@@ -21,7 +21,7 @@ The following commands should be run after activating the conda env.
 
 2. We will use the [Python requests library](https://requests.readthedocs.io/) to
 download data. If you use **proxies**, set them in
-[`data/proxies.json`](data/proxies.json), or set the environment variables
+[`data/proxies.json`](../data/proxies.json), or set the environment variables
 `HTTP_PROXY` and `HTTPS_PROXY` as mentioned in the
 [requests docs](https://requests.readthedocs.io/en/latest/user/advanced/#proxies).
 
