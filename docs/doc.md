@@ -9,6 +9,9 @@
 - [3D Models and 3D Printing](#3d-models-and-3d-printing)
 - [Data Analysis](#data-analysis)
 - [Miscellaneous](#miscellaneous)
+  - [21 Joint Format](#21-joint-format)
+  - [Transform Tree](#transform-tree)
+  - [Contactmap Format](#contactmap-format)
 
 # Getting Started
 
@@ -54,12 +57,12 @@ Extracting...
 
 4. Download MANO code and models from [https://mano.is.tue.mpg.de](https://mano.is.tue.mpg.de)
 and unzip it in to `thirdparty/mano`. **Note**: MANO code is written for Python 2,
-but we use it in Python 3. We have developed work-arounds for all issue except one:
+but we use it in Python 3. We have developed work-arounds for all issues except one:
 you should comment out the `print 'FINITO'` (last line) statement in
 `thirdparty/mano/webuser/smpl_handpca_wrapper_HAND_only.py`. MPI license does 
 not allow re-distribution of their MANO code.
 
-5. You can 3D visualize contact maps and 3D hand joints:
+5. You can 3D visualize [contact maps](#contactmap-format) and 3D hand joints:
 ```bash
 $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse --mode simple_hands
 ```
@@ -198,3 +201,17 @@ Other matrices can be composed. For example, the pose of an object in the camera
 coordinate frame `cTo = inv(wTc) * wTo`. This naming convention, explained in
 [this blog post](https://gtsam.org/gtsam.org/2020/06/28/gtsam-conventions.html)
 makes keeping track of 3D transforms easier.
+
+## Contactmap Format
+- Following the original [ContactDB paper](https://arxiv.org/abs/1904.06830), the
+contactmap is encoded as a per-vertex color in the object mesh. The value is
+in `[0, 1]`. All 3 components -- R, G and B -- of the vertex color are set to the
+same value.
+- Before using the contactmap, it needs to be pre-processed by fitting a sigmoid to
+its values, such that the min is at 0.05 and max at 0.95
+(see [paper](https://arxiv.org/abs/1904.06830)). The `texture_proc()` function in
+[`utilities/misc.py`](../utilities/misc.py) does this.
+- Some small fraction of vertices will have their contact value set to `0`. That vertex
+of the object was not scanned with the thermal camera (mostly because of occlusion),
+and the contact value at these vertices should be considered "don't know", not "no contact".
+See how `texture_proc()` handles this. Again, this should be rare but worth documenting.
