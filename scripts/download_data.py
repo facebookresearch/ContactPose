@@ -14,6 +14,8 @@ osp = os.path
 
 
 class ContactPoseDownloader(object):
+  with open(osp.join('data', 'proxies.json'), 'r') as f:
+    proxies = json.load(f)
   def __init__(self):
     self.data_dir = osp.join('data', 'contactpose_data')
     if not osp.isdir(self.data_dir):
@@ -34,7 +36,7 @@ class ContactPoseDownloader(object):
     taken from https://stackoverflow.com/a/37573701
     """
     # Streaming, so we can iterate over the response.
-    r = requests.get(url, stream=True)
+    r = requests.get(url, stream=True, proxies=ContactPoseDownloader.proxies)
     # Total size in bytes.
     total_size = int(r.headers.get('content-length', 0))
     block_size = 1024 #1 Kibibyte

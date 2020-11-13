@@ -19,7 +19,13 @@ $ conda activate contactpose
 ```
 The following commands should be run after activating the conda env.
 
-2. Startup by downloading grasp data (pose annotations and camera calibrations) for the entire dataset,
+2. We will use the [Python requests library](https://requests.readthedocs.io/) to
+download data. If you use **proxies**, set them in
+[`data/proxies.json`](data/proxies.json), or set the environment variables
+`HTTP_PROXY` and `HTTPS_PROXY` as mentioned in the
+[requests docs](https://requests.readthedocs.io/en/latest/user/advanced/#proxies).
+
+3. Startup by downloading grasp data (pose annotations and camera calibrations) for the entire dataset,
 contact maps for participant \#28 all 'use' intent grasps, and RGB-D images for
 participant \#28 'bowl' object, 'use' intent grasp. By default it will
 download to `data/contactpose_data`, but you can also provide a directory of
@@ -46,14 +52,14 @@ Extracting...
 1it [00:33, 33.48s/it]
 ```
 
-3. Download MANO code and models from [https://mano.is.tue.mpg.de](https://mano.is.tue.mpg.de)
+4. Download MANO code and models from [https://mano.is.tue.mpg.de](https://mano.is.tue.mpg.de)
 and unzip it in to `thirdparty/mano`. **Note**: MANO code is written for Python 2,
 but we use it in Python 3. We have developed work-arounds for all issue except one:
 you should comment out the `print 'FINITO'` (last line) statement in
 `thirdparty/mano/webuser/smpl_handpca_wrapper_HAND_only.py`. MPI license does 
 not allow re-distribution of their MANO code.
 
-4. You can 3D visualize contact maps and 3D hand joints:
+5. You can 3D visualize contact maps and 3D hand joints:
 ```bash
 $ python scripts/show_contactmap.py --p_num 28 --intent use --object_name mouse --mode simple_hands
 ```
