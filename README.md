@@ -42,6 +42,7 @@ year = {2020}
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
+- [x] [Robust networking utilities](utilities/networking.py) for data download with exponential backoff in case of connection failure
 - [ ] [Speed up dataset download by organizing images into videos](https://github.com/facebookresearch/ContactPose/issues/3)
 - [x] [Release object 3D models](docs/doc.md#3d-models-and-3d-printing)
 - [x] [Code for cropping images around hand-object](demo.ipynb)
