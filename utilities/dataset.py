@@ -19,7 +19,8 @@ def get_object_names(p_num, intent, ignore_hp=True):
   """
   sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
   sess_dir = osp.join('data', 'contactpose_data', sess_dir)
-  return [o for o in next(os.walk(sess_dir))[1] if o not in ['hands', 'palm_print']]
+  ignored_objects = ('hands', 'palm_print') if ignore_hp else ()
+  return [o for o in next(os.walk(sess_dir))[1] if o not in ignored_objects]
 
 
 def get_intents(p_num, object_name):
@@ -28,7 +29,7 @@ def get_intents(p_num, object_name):
   """
   out = []
   for ins in ('use', 'handoff'):
-    sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
+    sess_dir = 'full{:d}_{:s}'.format(p_num, ins)
     sess_dir = osp.join('data', 'contactpose_data', sess_dir, object_name)
     if osp.isdir(sess_dir):
       out.append(ins)
