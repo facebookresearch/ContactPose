@@ -48,7 +48,8 @@ def produce_worker(task, ffmpeg_path):
     if osp.isdir(data_dir):
       shutil.rmtree(data_dir)
       print('Deleted {:s}'.format(data_dir))
-    downloader.download_images(p_num, intent, dload_dir, include_objects=(object_name,))
+    downloader.download_images(p_num, intent, dload_dir,
+                               include_objects=(object_name,))
     if not osp.isdir(data_dir):
       print('Could not download {:s} {:s}'.format(p_id, object_name))
       # check if the data actually exists

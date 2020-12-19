@@ -190,4 +190,3 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,python,code
 .vscode
-scripts/get_urls.py
