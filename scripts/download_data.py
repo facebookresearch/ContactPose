@@ -111,7 +111,7 @@ class ContactPoseDownloader(object):
     object_names = list(self.urls['images'][p_id].keys())
     if include_objects is None:
       include_objects = object_names[:]
-    filenames = []
+    filenames_to_extract = {}
     for object_name in tqdm(include_objects):
       if object_name not in object_names:
         print('{:d} {:s} does not have {:s}'.format(p_num, intent, object_name))
@@ -120,13 +120,13 @@ class ContactPoseDownloader(object):
       url = self.urls['images'][p_id][object_name]
       print(object_name)
       if nutils.download_url(url, filename):
-        filenames.append(filename)
+        filenames_to_extract[object_name] = filename
       else:
         print('{:s} {:s} Download unsuccessful'.format(p_id, object_name))
         return
     
     print('Extracting...')
-    for object_name, filename in tqdm(zip(include_objects, filenames)):
+    for object_name, filename in tqdm(filenames_to_extract.items()):
       obj_dir = osp.join(sess_dir, object_name)
       os.makedirs(obj_dir, exist_ok=True)
       self._unzip_and_del(filename, obj_dir)
@@ -142,7 +142,6 @@ class ContactPoseDownloader(object):
           os.makedirs(dst_dir)
         dst = osp.join(dst_dir, 'images_full')
         os.symlink(src, dst)
-    
 
 
 if __name__ == '__main__':
@@ -195,6 +194,7 @@ if __name__ == '__main__':
       include_objects = args.object_names
       if include_objects is not None:
         include_objects = include_objects.split(',')
+        include_objects = list(set(include_objects))  # remove duplicates
       downloader.download_images(p_num, intent,
                                  osp.expanduser(args.images_dload_dir),
                                  include_objects=include_objects)
