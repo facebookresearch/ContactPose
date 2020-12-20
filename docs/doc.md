@@ -132,7 +132,7 @@ to `data/contactpose_data` and can be set through `--images_dload_dir`.
 
 **New**: Many users need only RGB images. So we have compressed RGB images into
 videos and provide separate download links, which reduces the download size ~4.5x.
-For this, change the `--type` flag in the command above.
+The compression is lossless. To use this, change the `--type` flag in the command above.
 - `--type images`: Both RGB and depth images, no video compression
 - `--type depth_images`: Same download as `--type images`, extract only depth images
 - `--type color_images`: Compressed RGB video download, 4-5x faster
