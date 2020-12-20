@@ -164,7 +164,8 @@ if __name__ == '__main__':
   parser.add_argument('--background_images_dir', required=True,
                       help='Directory containing background images e.g. COCO')
   parser.add_argument('--crop_size', default=256, type=int)
-  parser.add_argument('--no_refinement', action='store_false', dest='do_grabcut',
+  parser.add_argument('--no_mask_refinement', action='store_false',
+                      dest='do_grabcut',
                       help='No refinement of masks with GrabCut')
   args = parser.parse_args()
 

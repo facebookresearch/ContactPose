@@ -86,16 +86,18 @@ Jupyter notebook demonstrating the ContactPose dataset API - accessing images, p
 
 # Downloading Data
 
+## Main Script
+
 All downloads can be done through `scripts/download_data.py`:
 ```bash
 $ python scripts/download_data.py --help
-usage: download_data.py [-h] --type {grasps,images,contact_maps,markers,3Dmodels}
+usage: download_data.py [-h] --type {grasps,color_images,depth_images,images,contact_maps,markers,3Dmodels}
                         [--p_nums P_NUMS] [--intents INTENTS]
                         [--images_dload_dir IMAGES_DLOAD_DIR]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --type {grasps,images,contact_maps}
+  --type {grasps,color_images,depth_images,images,contact_maps}
   --p_nums P_NUMS       Participant numbers E.g. 1, 1,2, or 1-5
   --intents INTENTS     use, handoff, or use,handoff
   --images_dload_dir IMAGES_DLOAD_DIR
@@ -103,11 +105,15 @@ optional arguments:
                         symlinked to the appropriate location
 ```
 
+## Download Contact Maps
+
 You can download more contact maps:
 
 ```bash
 $ python scripts/download_data.py --p_nums 1-10 --intents use,handoff --type contact_maps
 ```
+
+## Download RGB-D Images
 
 And more RGB-D images:
 
@@ -120,7 +126,23 @@ The entire RGB-D collection is ~ 2.5 TB. Hence the script provides the option to
 provide an image download directory. This can be on a large SSD drive, for example.
 It will automatically symlink the downloaded data to the appropriate location
 in `data/contactpose_data` for easy access. The image download directory defaults
-to `data/contactpose_data`.
+to `data/contactpose_data` and can be set through `--images_dload_dir`.
+
+## Download RGB Images only
+
+**New**: Many users need only RGB images. So we have compressed RGB images into
+videos and provide separate download links, which reduces the download size ~4.5x.
+For this, change the `--type` flag in the command above.
+- `--type images`: Both RGB and depth images, no video compression
+- `--type depth_images`: Same download as `--type images`, extract only depth images
+- `--type color_images`: Compressed RGB video download, 4-5x faster
+
+Depth images are (for now) still needed to
+[preprocess images for ML](#image-preprocessing). We are working on refactoring
+that code to allow RGB cropping without depth
+(see [issue](https://github.com/facebookresearch/ContactPose/issues/6)).
+
+## Download 3D Models
 
 3D models of objects and locations of markers placed on them (this is already
 done if you run `startup.py`):
@@ -129,6 +151,8 @@ done if you run `startup.py`):
 $ python scripts/download_data.py --type 3Dmodels
 $ python scripts/download_data.py --type markers
 ```
+
+# Download Grasps
 
 All grasp information - 3D joints, MANO fits, camera calibrations - (this is already
 done if you run `startup.py`):
@@ -161,6 +185,7 @@ Found 128 images
   <img src="../readme_images/preprocessing_middle.png" width="200">
   <img src="../readme_images/preprocessing_right.png" width="200">
 </p>
+We also provide [this convenient wrapper script](../scripts/download_and_preprocess_images.sh) downloads the images and crops them.
 
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
