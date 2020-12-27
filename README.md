@@ -42,6 +42,7 @@ year = {2020}
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
+- [ ] [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 32, 33, 34, 35
 - [ ] Use [rclone](https://github.com/rclone/rclone) for Dropbox downloads
 - [ ] [Make depth images optional in cropping script](https://github.com/facebookresearch/ContactPose/issues/6)
 - [x] [Robust networking utilities](utilities/networking.py) for data download with exponential backoff in case of connection failure
