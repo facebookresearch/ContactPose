@@ -88,7 +88,7 @@ Jupyter notebook demonstrating the ContactPose dataset API - accessing images, p
 
 ## Main Script
 
-All downloads can be done through `scripts/download_data.py`:
+All downloads can be done through [`scripts/download_data.py`](../scripts/download_data.py):
 ```bash
 $ python scripts/download_data.py --help
 usage: download_data.py [-h] --type {grasps,color_images,depth_images,images,contact_maps,markers,3Dmodels}
@@ -145,7 +145,7 @@ that code to allow RGB cropping without depth
 ## Download 3D Models
 
 3D models of objects and locations of markers placed on them (this is already
-done if you run `startup.py`):
+done if you run [`startup.py`](../startup.py)):
 
 ```bash
 $ python scripts/download_data.py --type 3Dmodels
@@ -155,7 +155,7 @@ $ python scripts/download_data.py --type markers
 # Download Grasps
 
 All grasp information - 3D joints, MANO fits, camera calibrations - (this is already
-done if you run `startup.py`):
+done if you run [`startup.py`](../startup.py)):
 
 ```bash
 $ python scripts/download_data.py --type grasps
@@ -165,7 +165,7 @@ $ python scripts/download_data.py --type grasps
 [![](../readme_images/rendering_teaser.png)](rendering.md)
 
 # Image Preprocessing
-`scripts/preprocess_images.py` crops RGB and depth images and randomizes the
+[`scripts/preprocess_images.py`](../scripts/preprocess_images.py) crops RGB and depth images and randomizes the
 background of RGB images. It also saves information about the projected 
 visible object mesh vertices. This data is useful for
 [training image-based contact models](https://github.com/samarth-robo/ContactPose-ML/tree/images).
@@ -185,7 +185,7 @@ Found 128 images
   <img src="../readme_images/preprocessing_middle.png" width="200">
   <img src="../readme_images/preprocessing_right.png" width="200">
 </p>
-We also provide [this convenient wrapper script](../scripts/download_and_preprocess_images.sh) downloads the images and crops them.
+We also provide a wrapper script `scripts/download_and_preprocess_images.sh` to download the images and crop them.
 
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
@@ -203,7 +203,7 @@ for more details about 3D printing the objects.
 The ordering and placement of joints follows the
 [OpenPose format](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/output.md#hand-output-format).
 In 3D, the joints are at the center of the finger-cylinders, not on the surface.
-The functions `mano2openpose()` and `mano_joints_with_fingertips()` in `utilities/misc.py`
+The functions `mano2openpose()` and `mano_joints_with_fingertips()` in [`utilities/misc.py`](../utilities/misc.py)
 convert the joints from the MANO model to this format. For example, see how 
 they are used in `load_mano_meshes()`.
 
