@@ -192,8 +192,11 @@ We also provide a wrapper script `scripts/download_and_preprocess_images.sh` to 
 [STL files with cylindrical recesses for markers](https://www.dropbox.com/sh/m14c4u2yr029f8k/AAA1yGl-k_4XEXElfmCgF1Fpa?dl=1) |
 [High-poly PLY files](https://www.dropbox.com/sh/l76a01eyx6sxoll/AACrvU_QYRG8A8pevM1QPCs9a?dl=1)
 
-The cylindrical recesses were produced using [this script](). Please see
-[this README](https://github.com/samarth-robo/contactdb_utils#3d-printing)
+The cylindrical recesses were produced using
+[this script](https://github.com/samarth-robo/contactpose_ros_utils/blob/master/scripts/embed_marker_points.py),
+and the locations of cylindrical recesses were aligned to the Optitrack (mocap) "rigid body" using
+[this script](https://github.com/samarth-robo/contactpose_ros_utils/blob/master/scripts/align_optitrack_rigid_body.py).
+Please see [this README](https://github.com/samarth-robo/contactdb_utils#3d-printing)
 for more details about 3D printing the objects.
 
 # [Data Analysis](data_analysis.md)
