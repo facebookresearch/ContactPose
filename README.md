@@ -22,6 +22,7 @@ Code for the ContactPose dataset released in the following paper:
 
 - [Explore the dataset](https://contactpose.cc.gatech.edu/contactpose_explorer.html)
 - [hand-object contact ML code](https://github.com/samarth-robo/ContactPose-ML)
+- [ROS code](https://github.com/samarth-robo/contactpose_ros_utils) used for recording the dataset
 
 ## Citation
 ```
@@ -51,8 +52,8 @@ year = {2020}
 - [x] [Code for cropping images around hand-object](demo.ipynb)
 - [x] [Release contact modeling ML code](https://github.com/samarth-robo/ContactPose-ML)
 - [ ] Release more data analysis code
-- [x] **new** [Release MANO fitting code](utilities/mano_fitting.py) | [demo at end of notebook](demo.ipynb)
+- [x] [Release MANO fitting code](utilities/mano_fitting.py) | [demo at end of notebook](demo.ipynb)
 - [x] [RGB-D image background randomization support](docs/doc.md#image-preprocessing)
-- [ ] Release ROS code used for recording the dataset
+- [x] **new** Release [ROS code](https://github.com/samarth-robo/contactpose_ros_utils) used for recording the dataset
 - [x] [MANO and object mesh rendering](docs/rendering.md)
 - [ ] Documentation using [Read the Docs](https://readthedocs.org)
