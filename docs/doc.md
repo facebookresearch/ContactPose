@@ -86,6 +86,10 @@ Jupyter notebook demonstrating the ContactPose dataset API - accessing images, p
 
 # Downloading Data
 
+**NOTE**: We [fixed some annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) for participants 31-35 on 12 Jan 2021.
+If you downloaded data before that date, please re-download it.
+Changes were made to data `--type` `grasps`, `images`, `depth_images`, and `color_images`.
+
 ## Main Script
 
 All downloads can be done through [`scripts/download_data.py`](../scripts/download_data.py):
