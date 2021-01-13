@@ -19,6 +19,8 @@ if DROPBOX_FOUND:
 
 with open(osp.join('data', 'proxies.json'), 'r') as f:
   proxies = json.load(f)
+  if ('https' not in proxies) or (proxies['https'] is None):
+    proxies = None
 
 
 def exponential_backoff(n, max_backoff=64.0):
