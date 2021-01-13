@@ -96,8 +96,11 @@ def produce_worker(task, ffmpeg_path):
     return False
 
 
-def produce(p_nums, cleanup=False, parallel=True, ffmpeg_path='ffmpeg'):
-  if cleanup:
+def produce(p_nums, cleanup=False, parallel=True, ffmpeg_path='ffmpeg',
+            tasks=None):
+  if tasks is not None:
+    pass
+  elif cleanup:
     print('#### Cleanup mode ####')
     filename = osp.join('status.json')
     with open(filename, 'r') as f:
@@ -138,9 +141,19 @@ def produce(p_nums, cleanup=False, parallel=True, ffmpeg_path='ffmpeg'):
 
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('-p', type=int, required=True)
+  parser.add_argument('-p', type=int, default=-1)
+  parser.add_argument('--tasks', default=None, help='e.g. 1-use-pan,34-use-mug')
   parser.add_argument('--cleanup', action='store_true')
   parser.add_argument('--no_parallel', action='store_false', dest='parallel')
   parser.add_argument('--ffmpeg_path', default='ffmpeg')
   args = parser.parse_args()
-  produce((args.p, ), cleanup=args.cleanup, parallel=args.parallel)
+
+  if args.tasks is not None:
+    # parse tasks
+    tasks = args.tasks.split(',')
+    tasks = [t.split('-') for t in tasks]
+    tasks = [(int(t[0]), t[1], t[2]) for t in tasks]
+  else:
+    tasks = args.tasks
+    assert (args.p > 0)
+  produce((args.p, ), cleanup=args.cleanup, parallel=args.parallel, tasks=tasks)
