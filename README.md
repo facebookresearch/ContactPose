@@ -43,17 +43,17 @@ year = {2020}
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
-- [x] [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 31-35: done. **NOTE**: If you downloaded data for participants 31-35 before 12 Jan 2021, please re-download it.
-- [ ] Use [rclone](https://github.com/rclone/rclone) for Dropbox downloads
-- [ ] [Make depth images optional in cropping script](https://github.com/facebookresearch/ContactPose/issues/6)
-- [x] [Robust networking utilities](utilities/networking.py) for data download with exponential backoff in case of connection failure
-- [x] [Speed up dataset download by organizing images into videos](docs/doc.md#download-rgb-images-only)
-- [x] [Release object 3D models](docs/doc.md#3d-models-and-3d-printing)
-- [x] [Code for cropping images around hand-object](demo.ipynb)
-- [x] [Release contact modeling ML code](https://github.com/samarth-robo/ContactPose-ML)
-- [ ] Release more data analysis code
-- [x] [Release MANO fitting code](utilities/mano_fitting.py) | [demo at end of notebook](demo.ipynb)
-- [x] [RGB-D image background randomization support](docs/doc.md#image-preprocessing)
-- [x] **new** Release [ROS code](https://github.com/samarth-robo/contactpose_ros_utils) used for recording the dataset
-- [x] [MANO and object mesh rendering](docs/rendering.md)
-- [ ] Documentation using [Read the Docs](https://readthedocs.org)
+- :heavy_check_mark: [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 31-35. **NOTE**: If you downloaded data for participants 31-35 before 12 Jan 2021, please re-download it.
+- :black_square_button: Use [rclone](https://github.com/rclone/rclone) for Dropbox downloads
+- :black_square_button: [Make depth images optional in cropping script](https://github.com/facebookresearch/ContactPose/issues/6)
+- :heavy_check_mark: [Robust networking utilities](utilities/networking.py) for data download with exponential backoff in case of connection failure
+- :heavy_check_mark: [Speed up dataset download by organizing images into videos](docs/doc.md#download-rgb-images-only)
+- :heavy_check_mark: [Release object 3D models](docs/doc.md#3d-models-and-3d-printing)
+- :heavy_check_mark: [Code for cropping images around hand-object](demo.ipynb)
+- :heavy_check_mark: [Release contact modeling ML code](https://github.com/samarth-robo/ContactPose-ML)
+- :black_square_button: Release more data analysis code
+- :heavy_check_mark: [Release MANO fitting code](utilities/mano_fitting.py) | [demo at end of notebook](demo.ipynb)
+- :heavy_check_mark: [RGB-D image background randomization support](docs/doc.md#image-preprocessing)
+- :heavy_check_mark: **new** Release [ROS code](https://github.com/samarth-robo/contactpose_ros_utils) used for recording the dataset
+- :heavy_check_mark: [MANO and object mesh rendering](docs/rendering.md)
+- :black_square_button: Documentation using [Read the Docs](https://readthedocs.org)
