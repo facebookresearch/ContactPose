@@ -35,7 +35,7 @@ year = {2020}
 }
 ```
 
-# [Documentation](docs/doc.md)
+# [Documentation Link](docs/doc.md)
 
 # Licensing
 - Code: [MIT License](LICENSE.txt)
