@@ -184,12 +184,16 @@ Found 128 images
 28:use:bowl:kinect2_right
   2%|██▌                                                                                                                                           | 10/558 [00:08<07:28,  1.22it/s]
 ```
+
 <p align="middle">
-  <img src="../readme_images/preprocessing_left.png" width="200">
-  <img src="../readme_images/preprocessing_middle.png" width="200">
-  <img src="../readme_images/preprocessing_right.png" width="200">
+  <img src="../readme_images/preprocessing_left.png" width="200"/>
+  <img src="../readme_images/preprocessing_middle.png" width="200"/>
+  <img src="../readme_images/preprocessing_right.png" width="200"/>
 </p>
-We also provide a wrapper script `scripts/download_and_preprocess_images.sh` to download the images and crop them.
+
+We also provide a wrapper script
+[`scripts/download_and_preprocess_images.sh`](../scripts/download_and_preprocess_images.sh)
+to download the images and crop them.
 
 # 3D Models and 3D Printing
 [STL files](https://www.dropbox.com/sh/g1nv595mvhnnxoi/AACEF0x4Hj22MctIpzFCkIVCa?dl=1) | 
