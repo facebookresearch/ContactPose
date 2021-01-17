@@ -1,5 +1,6 @@
 #!usr/bin/env bash
-# (c) Facebook, Inc. and its affiliates. Confidential and proprietary.
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 conda activate contactpose
 
 if [ $# -ne 4 ]; then

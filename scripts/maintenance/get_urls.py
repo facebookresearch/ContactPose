@@ -1,3 +1,5 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 import requests
 import json
 from copy import deepcopy

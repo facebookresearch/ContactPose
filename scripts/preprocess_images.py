@@ -1,5 +1,5 @@
-# (c) Facebook, Inc. and its affiliates. Confidential and proprietary.
-
+# Copyright (c) Facebook, Inc. and its affiliates.
+# Code by Samarth Brahmbhatt
 """
 Preprocesses images for ML training by cropping (RGB and depth), and 
 randomizing background (RGB only)
