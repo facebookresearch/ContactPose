@@ -37,13 +37,17 @@ year = {2020}
 
 # [Documentation Link](docs/doc.md)
 
+# [Data Changelog](docs/data_changelog.md)
+We have made some data and annotation corrections. The link above mentions the correction date and the exact data that was corrected.
+If you got that data before the correction date, please re-download it.
+
 # Licensing
 - Code: [MIT License](LICENSE.txt)
 - 3D models: each model has its own license, see `README.txt` and `licenses.json` in the [downloads](docs/doc.md#3d-models-and-3d-printing)
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
-- :heavy_check_mark: [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 31-35. **NOTE**: If you downloaded data for participants 31-35 before 12 Jan 2021, please re-download it.
+- :heavy_check_mark: [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 31-35.
 - :black_square_button: Use [rclone](https://github.com/rclone/rclone) for Dropbox downloads
 - :black_square_button: [Make depth images optional in cropping script](https://github.com/facebookresearch/ContactPose/issues/6)
 - :heavy_check_mark: [Robust networking utilities](utilities/networking.py) for data download with exponential backoff in case of connection failure
