@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 import init_paths
+from utilities.import_open3d import *
 from utilities.dataset import ContactPose
 import utilities.misc as mutils
-from utilities.import_open3d import *
 
 
 def apply_colormap_to_mesh(mesh, sigmoid_a=0.05, invert=False):
@@ -39,13 +39,15 @@ def apply_semantic_colormap_to_mesh(mesh, semantic_idx, sigmoid_a=0.05,
 
 def show_contactmap(p_num, intent, object_name, mode='simple',
                     joint_sphere_radius_mm=4.0, bone_cylinder_radius_mm=2.5,
-                    bone_color=np.asarray([224.0, 172.0, 105.0])/255):
+                    bone_color=np.asarray([224.0, 172.0, 105.0])/255,
+                    show_axes=False):
   """
   mode =
   simple: just contact map
   simple_hands: skeleton + contact map
   semantic_hands_fingers: skeleton + contact map colored by finger proximity
   semantic_hands_phalanges: skeleton + contact map colored by phalange proximity
+  show_axes: visualize coordinate axes if True
   """
   cp = ContactPose(p_num, intent, object_name)
 
@@ -132,6 +134,8 @@ def show_contactmap(p_num, intent, object_name, mode='simple',
       mesh.compute_vertex_normals()
       geoms.append(mesh)
   
+  if show_axes:
+    geoms.append(o3dg.TriangleMesh.create_coordinate_frame(size=0.2))
   o3dv.draw_geometries(geoms)
 
 
@@ -141,6 +145,8 @@ if __name__ == '__main__':
   parser.add_argument('--mode', help='Contact Map mode', default='simple_hands',
     choices=('simple', 'simple_mano', 'simple_hands', 'semantic_hands_fingers',
              'semantic_hands_phalanges'))
+  parser.add_argument('--show_axes', action='store_true',
+                      help='Show coordinate axes')
   args = parser.parse_args()
   if args.object_name == 'hands':
     print('hands do not have a contact map')
@@ -148,4 +154,5 @@ if __name__ == '__main__':
   elif args.object_name == 'palm_print':
     print('Forcing mode to simple since palm_print does not have hand pose')
     args.mode = 'simple'
-  show_contactmap(args.p_num, args.intent, args.object_name, args.mode)
+  show_contactmap(args.p_num, args.intent, args.object_name, args.mode,
+                  show_axes=args.show_axes)

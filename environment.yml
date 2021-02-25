@@ -3,18 +3,17 @@
 name: contactpose
 
 channels:
-  - open3d-admin
   - anaconda
 
 dependencies:
   - python=3.7
   - matplotlib
-  - open3d
   - opencv
   - scikit-learn
   - tqdm
   - requests
   - pip
   - pip:
-      - transforms3d
       - chumpy
+      - open3d
+      - transforms3d

@@ -1,7 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 # Code by Samarth Brahmbhatt
 from utilities.import_open3d import *
-from open3d import registration as o3dr
+from open3d import pipelines
 import utilities.misc as mutils
 assert(mutils.load_mano_model is not None)
 
@@ -13,6 +13,7 @@ import transforms3d.quaternions as txq
 import pickle
 
 osp = os.path
+o3dr = pipelines.registration
 
 
 def mano_param_dict(n_pose_params, n_betas=10):
