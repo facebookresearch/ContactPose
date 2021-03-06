@@ -2,24 +2,22 @@
 
 
 # [ContactPose](https://contactpose.cc.gatech.edu)
-
-<figure>
-<img src="readme_images/teaser.png" width="700">
-<figcaption>Example ContactPose data: Contact Maps, 3D hand pose, and RGB-D grasp images for functional grasps.</figcaption>
-</figure>
-
-Code for the ContactPose dataset released in the following paper:
-
+Download and pre-processing utilities + Python dataloader for the ContactPose dataset.
+The dataset was introduced in the following **ECCV 2020** paper:
 [ContactPose: A Dataset of Grasps with Object Contact and Hand Pose](https://contactpose.cc.gatech.edu) - 
 
 [Samarth Brahmbhatt](https://samarth-robo.github.io/),
 [Chengcheng Tang](https://scholar.google.com/citations?hl=en&user=WbG27wQAAAAJ),
 [Christopher D. Twigg](https://scholar.google.com/citations?hl=en&user=aN-lQ0sAAAAJ),
 [Charles C. Kemp](http://charliekemp.com/), and
-[James Hays](https://www.cc.gatech.edu/~hays/),
+[James Hays](https://www.cc.gatech.edu/~hays/)
 
-**ECCV 2020**.
+<figure>
+<img src="readme_images/teaser.png" width="700">
+<figcaption>Example ContactPose data: Contact Maps, 3D hand pose, and RGB-D grasp images for functional grasps.</figcaption>
+</figure>
 
+## Companion Repositories/Websites:
 - [Explore the dataset](https://contactpose.cc.gatech.edu/contactpose_explorer.html)
 - [hand-object contact ML code](https://github.com/samarth-robo/ContactPose-ML)
 - [ROS code](https://github.com/samarth-robo/contactpose_ros_utils) used for recording the dataset
