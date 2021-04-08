@@ -18,7 +18,7 @@ def get_object_names(p_num, intent, ignore_hp=True):
   returns list of objects grasped in this session
   """
   sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
-  sess_dir = osp.join('data', 'contactpose_data', sess_dir)
+  sess_dir = osp.join(os.path.dirname(__file__), '..', 'data', 'contactpose_data', sess_dir)
   ignored_objects = ('hands', 'palm_print') if ignore_hp else ()
   return [o for o in next(os.walk(sess_dir))[1] if o not in ignored_objects]
 
@@ -30,7 +30,7 @@ def get_intents(p_num, object_name):
   out = []
   for ins in ('use', 'handoff'):
     sess_dir = 'full{:d}_{:s}'.format(p_num, ins)
-    sess_dir = osp.join('data', 'contactpose_data', sess_dir, object_name)
+    sess_dir = osp.join(os.path.dirname(__file__), '..', 'data', 'contactpose_data', sess_dir, object_name)
     if osp.isdir(sess_dir):
       out.append(ins)
   return out
@@ -43,7 +43,7 @@ def get_p_nums(object_name, intent):
   out = []
   for p_num in range(1, 51):
     sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
-    sess_dir = osp.join('data', 'contactpose_data', sess_dir, object_name)
+    sess_dir = osp.join(os.path.dirname(__file__), '..', 'data', 'contactpose_data', sess_dir, object_name)
     if osp.isdir(sess_dir):
       out.append(p_num)
   return out
@@ -69,7 +69,7 @@ class ContactPose(object):
     self._mano_pose_params = mano_pose_params
   
     p_id = 'full{:d}_{:s}'.format(p_num, intent)
-    self.data_dir = osp.join('data', 'contactpose_data', p_id, object_name)
+    self.data_dir = osp.join(os.path.dirname(__file__), '..', 'data', 'contactpose_data', p_id, object_name)
     assert(osp.isdir(self.data_dir))
     
     # read grasp data
@@ -127,7 +127,8 @@ class ContactPose(object):
     self._ox = []  # joint projections
     self._om = []  # marker projections
     # 3D marker locations w.r.t. object
-    oM = np.loadtxt(osp.join('data', 'object_marker_locations',
+    oM = np.loadtxt(osp.join(os.path.dirname(__file__), '..', 'data',
+                             'object_marker_locations',
                              '{:s}_final_marker_locations.txt'.
                              format(object_name)))[:, :3]
     for frame_idx in range(len(self)):
@@ -155,7 +156,8 @@ class ContactPose(object):
         return
       ContactPose._mano_dicts = []
       for hand_name in ('LEFT', 'RIGHT'):
-        filename = osp.join('thirdparty', 'mano', 'models',
+        filename = osp.join(os.path.dirname(__file__), '..', 'thirdparty',
+                            'mano', 'models',
                             'MANO_{:s}.pkl'.format(hand_name))
         with open(filename, 'rb') as f:
           ContactPose._mano_dicts.append(pickle.load(f, encoding='latin1'))
