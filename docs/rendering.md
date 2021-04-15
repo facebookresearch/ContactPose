@@ -56,7 +56,7 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$MESA_HOME/include
 
 Edit `./etc/conda/deactivate.d/env_vars.sh` as follows:
 ```
-!/bin/sh
+#!/bin/sh
 
 export LIBRARY_PATH=$OLD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$OLD_LD_LIBRARY_PATH
