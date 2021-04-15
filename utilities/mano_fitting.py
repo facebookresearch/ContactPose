@@ -29,39 +29,6 @@ def mano_param_dict(n_pose_params, n_betas=10):
   return out
 
 
-def openpose2mano(o, n_joints_per_finger=4):
-  """
-  convert joints from openpose format to MANO format
-  """
-  finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
-  m = np.zeros((5*n_joints_per_finger+1, 3))
-  m[0] = o[0]
-  for ofidx in range(5):
-    for jidx in range(n_joints_per_finger):
-      oidx = 1 + ofidx*4 + jidx
-      midx = 1 + finger_o2m[ofidx]*n_joints_per_finger + jidx
-      m[midx] = o[oidx]
-  return np.array(m)
-
-
-# m2o
-# 0->1, 1->2, 2->4, 3->3, 4->0
-def mano2openpose(m, n_joints_per_finger=4):
-  """
-  convert joints from MANO format to openpose format
-  """
-  finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
-  finger_m2o = {v: k for k,v in finger_o2m.items()}
-  o = np.zeros((5*n_joints_per_finger+1, 3))
-  o[0] = m[0]
-  for mfidx in range(5):
-    for jidx in range(n_joints_per_finger):
-      midx = 1 + mfidx*4 + jidx
-      oidx = 1 + finger_m2o[mfidx]*n_joints_per_finger + jidx
-      o[oidx] = m[midx]
-  return o
-
-
 def get_palm_joints(p, n_joints_per_finger=4):
   """
   get the 6 palm joints (root + base of all 5 fingers)
@@ -70,24 +37,6 @@ def get_palm_joints(p, n_joints_per_finger=4):
   for fidx in range(5):
     idx.append(1 + fidx*n_joints_per_finger)
   return p[idx]
-
-
-def mano_joints_with_fingertips(m):
-  """
-  get joints from MANO model
-  MANO model does not come with fingertip joints, so we have selected vertices
-  that correspond to fingertips
-  """
-  fingertip_idxs = [333, 444, 672, 555, 745]
-  out = [m.J_transformed[0]]
-  for fidx in range(5):
-    for jidx in range(4):
-      if jidx < 3:
-        idx = 1 + fidx*3 + jidx
-        out.append(m.J_transformed[idx])
-      else:
-        out.append(m[fingertip_idxs[fidx]])
-  return out
 
 
 def register_pcs(src, tgt, verbose=True):
@@ -142,14 +91,14 @@ class MANOFitter(object):
       if joints is None:  # hand is not present
         mano_params.append(mano_param_dict(n_pose_params))  # dummy
         continue
-      cp_joints = openpose2mano(joints)
+      cp_joints = mutils.openpose2mano(joints)
 
       # MANO model
       m = mutils.load_mano_model(MANOFitter._mano_dicts[hand_idx],
                                  ncomps=n_pose_params, flat_hand_mean=False)
       m.betas[:] = np.zeros(m.betas.size)
       m.pose[:]  = np.zeros(m.pose.size)
-      mano_joints = mano_joints_with_fingertips(m)
+      mano_joints = mutils.mano_joints_with_fingertips(m)
       mano_joints_np = np.array([[float(mm) for mm in m] for m in mano_joints])
 
       # align palm
