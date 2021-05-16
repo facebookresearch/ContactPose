@@ -103,7 +103,7 @@ def p_dist_linesegment(p, ls):
   """
   Distance from point p to line segment ls
   p: Nx3
-  ls: Mx6
+  ls: Mx6 (2 3-dim endpoints of M line segments)
   """
   # NxMx3
   ap = p[:, np.newaxis, :] - ls[np.newaxis, :, :3]
@@ -128,6 +128,29 @@ def p_dist_linesegment(p, ls):
   within_ls = (proj > 0) * (proj < np.linalg.norm(u, axis=2)) * (d_endp < 0.03)
   d_ls = within_ls*d_line + (1-within_ls)*d_endp
   return d_ls
+
+
+def closest_linesegment_point(l0, l1, p):
+  """
+  For each point in p, finds the closest point on the list of line segments
+  whose endpoints are l0 and l1
+  p: N x 3
+  l0, l1: M x 3
+  out: N x M x 3
+  """
+  p  = np.broadcast_to(p[:, np.newaxis, :],  (len(p), len(l0), 3))
+  l0 = np.broadcast_to(l0[np.newaxis, :, :], (len(p), len(l0), 3))
+  l1 = np.broadcast_to(l1[np.newaxis, :, :], (len(p), len(l1), 3))
+  
+  llen = np.linalg.norm(l1 - l0, axis=-1, keepdims=True)
+  lu = (l1 - l0) / llen
+
+  v = p - l0
+  d = np.sum(v * lu, axis=-1, keepdims=True)
+  d = np.clip(d, a_min=0, a_max=llen)
+
+  out = l0 + d*lu
+  return out
 
 
 def pose_matrix(pose):
@@ -227,7 +250,7 @@ def average_quaternions(qs, ws=None):
     if np.dot(qs[0], qs[idx]) < 0:
         qs[idx] *= -1
 
-  for i in xrange(1, len(qs)):
+  for i in range(1, len(qs)):
     frac = ws[i] / (ws[i-1] + ws[i]) # weight of qs[i]
     qs[i] = quaternion_slerp(qs[i-1], qs[i], fraction=frac)
     ws[i] = 1 - sum(ws[i+1:])
@@ -250,7 +273,8 @@ def default_argparse(require_p_num=True, require_intent=True,
 def default_multiargparse():
   parser = argparse.ArgumentParser()
   parser.add_argument('--p_num',
-                      help='Participant numbers, comma or - separated, ignore for all participants',
+                      help='Participant numbers, comma or - separated.'
+                      'Skipping means all participants',
                       default=None)
   parser.add_argument('--intent', choices=('use', 'handoff', 'use,handoff'),
                       help='Grasp intents, comma separated', default='use,handoff')
@@ -373,33 +397,44 @@ def crop_image(im, joints, crop_size, fillvalue=[0]):
 
 
 def openpose2mano(o, n_joints_per_finger=4):
-    finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
-    m = np.zeros((5*n_joints_per_finger+1, 3))
-    m[0] = o[0]
-    for ofidx in range(5):
-      for jidx in range(n_joints_per_finger):
-        oidx = 1 + ofidx*4 + jidx
-        midx = 1 + finger_o2m[ofidx]*n_joints_per_finger + jidx
-        m[midx] = o[oidx]
-    return np.array(m)
+  """
+  convert joints from openpose format to MANO format
+  """
+  finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
+  m = np.zeros((5*n_joints_per_finger+1, 3))
+  m[0] = o[0]
+  for ofidx in range(5):
+    for jidx in range(n_joints_per_finger):
+      oidx = 1 + ofidx*4 + jidx
+      midx = 1 + finger_o2m[ofidx]*n_joints_per_finger + jidx
+      m[midx] = o[oidx]
+  return np.array(m)
 
 
 # m2o
 # 0->1, 1->2, 2->4, 3->3, 4->0
 def mano2openpose(m, n_joints_per_finger=4):
-    finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
-    finger_m2o = {v: k for k,v in finger_o2m.items()}
-    o = np.zeros((5*n_joints_per_finger+1, 3))
-    o[0] = m[0]
-    for mfidx in range(5):
-      for jidx in range(n_joints_per_finger):
-        midx = 1 + mfidx*4 + jidx
-        oidx = 1 + finger_m2o[mfidx]*n_joints_per_finger + jidx
-        o[oidx] = m[midx]
-    return o
+  """
+  convert joints from MANO format to openpose format
+  """
+  finger_o2m = {0: 4, 1: 0, 2: 1, 3: 3, 4: 2}
+  finger_m2o = {v: k for k,v in finger_o2m.items()}
+  o = np.zeros((5*n_joints_per_finger+1, 3))
+  o[0] = m[0]
+  for mfidx in range(5):
+    for jidx in range(n_joints_per_finger):
+      midx = 1 + mfidx*4 + jidx
+      oidx = 1 + finger_m2o[mfidx]*n_joints_per_finger + jidx
+      o[oidx] = m[midx]
+  return o
 
 
 def mano_joints_with_fingertips(m):
+  """
+  get joints from MANO model
+  MANO model does not come with fingertip joints, so we have selected vertices
+  that correspond to fingertips
+  """
   fingertip_idxs = [333, 444, 672, 555, 745]
   out = [m.J_transformed[0]]
   for fidx in range(5):

@@ -15,7 +15,7 @@ osp = os.path
 
 def get_object_names(p_num, intent, ignore_hp=True):
   """
-  returns list of objects grasped in this session
+  returns list of objects grasped by this participant with this intent
   """
   sess_dir = 'full{:d}_{:s}'.format(p_num, intent)
   sess_dir = osp.join(osp.dirname(__file__), '..', 'data', 'contactpose_data', sess_dir)
