@@ -22,7 +22,7 @@ def inspect_dir(dirname):
   assert(osp.isdir(dirname))
   print('Inspecting {:s}...'.format(dirname))
   filenames = next(os.walk(dirname))[-1]
-  ilenames = [osp.join(dirname, f) for f in filenames]
+  filenames = [osp.join(dirname, f) for f in filenames]
   print('Found {:d} images'.format(len(filenames)))
   return filenames
 
