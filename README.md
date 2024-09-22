@@ -1,5 +1,6 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/contactpose-a-dataset-of-grasps-with-object/grasp-contact-prediction-on-contactpose)](https://paperswithcode.com/sota/grasp-contact-prediction-on-contactpose?p=contactpose-a-dataset-of-grasps-with-object)
 
+**NOTE**: We are aware that the original Dropbox data download links are not valid anymore. Most of the data is now available in IEEE DataPort. This is being tracked in [Issue 27](https://github.com/facebookresearch/ContactPose/issues/27).
 
 # [ContactPose](https://contactpose.cc.gatech.edu)
 Download and pre-processing utilities + Python dataloader for the ContactPose dataset.
