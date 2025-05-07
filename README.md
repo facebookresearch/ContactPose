@@ -2,6 +2,13 @@
 
 **NOTE**: We are aware that the original Dropbox data download links are not valid anymore. Most of the data is now available in IEEE DataPort. This is being tracked in [Issue 27](https://github.com/facebookresearch/ContactPose/issues/27).
 
+For users that do not have access to IEEE DataPort, here is a [Google Drive link](https://drive.google.com/file/d/1paUAxXgHp6wDFBFw9MI1mxGElEl2KPew/view?usp=share_link) to sample data.
+
+Instructions (assume `CONTACTPOSE_ROOT` denotes the ContactPose repository directory):
+1. Delete or rename the `CONTACTPOSE_ROOT/data`.
+2. Download this ZIP file to `CONTACTPOSE_ROOT`.
+3. Unzip this file. It will create `CONTACTPOSE_ROOT/ContactPose sample data`. Rename this directory to `CONTACTPOSE_ROOT/data`.
+
 # [ContactPose](https://contactpose.cc.gatech.edu)
 Download and pre-processing utilities + Python dataloader for the ContactPose dataset.
 The dataset was introduced in the following **ECCV 2020** paper:
