@@ -53,6 +53,9 @@ If you got that data before the correction date, please re-download it.
 - All other data: [MIT License](LICENSE.txt)
 
 # Updates
+- :black_square_button: Create a HuggingFace dataset.
+- :heavy_check_mark: For users that do not have access to IEEE DataPort, here is a [Google Drive link](https://drive.google.com/file/d/1paUAxXgHp6wDFBFw9MI1mxGElEl2KPew/view?usp=share_link) to sample data.
+- :heavy_check_mark: Dataset has been uploaded to IEEE DataPort at https://dx.doi.org/10.21227/fb0w-gt48 to prevent Dropbox issues.
 - :heavy_check_mark: [Fix annotation errors](https://github.com/facebookresearch/ContactPose/issues/7) in data from participants 31-35.
 - :black_square_button: Use [rclone](https://github.com/rclone/rclone) for Dropbox downloads
 - :black_square_button: [Make depth images optional in cropping script](https://github.com/facebookresearch/ContactPose/issues/6)
